@@ -7,6 +7,13 @@ body{
 button{
     display: block;
     width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.btn{
+    display: block;
 }
 
 .container{
