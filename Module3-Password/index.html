@@ -5,23 +5,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Conxion Cipher Siege</title>
+  <style>
+    body {
+      background-color: #050505;
+      color: white;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    #debug-log {
+      color: #ff5555;
+      padding: 20px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+  <script>
+    // Polyfill for process.env
+    window.process = { env: { NODE_ENV: 'production' } };
+
+    // Error Catcher: Show errors on the screen if the app crashes
+    window.onerror = function (msg, url, line, col, error) {
+      const log = document.getElementById('debug-log');
+      if (log) log.innerHTML += `ERROR: ${msg}\nAt: ${url}:${line}\n\n`;
+      return false;
+    };
+  </script>
   <script type="module" crossorigin src="./assets/index-w33JvaOq.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-BJJM9Y59.css">
 </head>
 
 <body>
-  <script>
-    // Polyfill for process.env (prevents crashes in library code)
-    window.process = { env: { NODE_ENV: 'production' } };
-  </script>
+  <div id="debug-log"></div>
   <script src="../nav.js"></script>
   <div id="root">
-    <div style="color: white; text-align: center; padding-top: 100px; font-family: sans-serif;">
+    <div style="text-align: center; padding-top: 100px;">
       <h2>Loading Module 3...</h2>
-      <p>If you see this screen for too long, please ensure you are running this through a local server (like Live
-        Server or 'npx serve').</p>
-      <p style="font-size: 0.8em; opacity: 0.6;">(Browsers block modern React scripts when opened directly as a file)
-      </p>
+      <p>If this stays here, check the red error text above.</p>
     </div>
   </div>
 </body>
