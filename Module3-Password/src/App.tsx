@@ -48,10 +48,10 @@ const PasswordBossBattle = () => {
     }
   }, [gameState]);
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = () => {
     try {
-      const res = await fetch('/api/leaderboard');
-      const data = await res.json();
+      const stored = localStorage.getItem('siege_leaderboard');
+      const data = stored ? JSON.parse(stored) : [];
       setLeaderboard(data);
     } catch (e) {
       console.error("Failed to fetch leaderboard", e);
@@ -61,13 +61,15 @@ const PasswordBossBattle = () => {
   const submitScore = async () => {
     setIsAnalyzing(true);
     // Simulate deep scanning
-    setTimeout(async () => {
+    setTimeout(() => {
       try {
-        await fetch('/api/score', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: userName || 'Anoniem', score })
-        });
+        const stored = localStorage.getItem('siege_leaderboard');
+        let data = stored ? JSON.parse(stored) : [];
+        data.push({ name: userName || 'Anoniem', score });
+        data.sort((a: any, b: any) => b.score - a.score);
+        data = data.slice(0, 10);
+        localStorage.setItem('siege_leaderboard', JSON.stringify(data));
+        
         setIsAnalyzing(false);
         setGameState('end');
       } catch (e) {
@@ -80,8 +82,14 @@ const PasswordBossBattle = () => {
 
   const generateAiAnalysis = async () => {
     setIsAnalyzing(true);
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey === "undefined") {
+      setAiSummary("AI-analyse is niet geconfigureerd voor dit station. Maar je hebt het geweldig gedaan!");
+      setIsAnalyzing(false);
+      return;
+    }
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       
       const correctCount = performanceData.filter(p => p.correct).length;
       const avgEntropy = passwordHistory.length > 0 
@@ -122,6 +130,7 @@ const PasswordBossBattle = () => {
     }
     setIsAnalyzing(false);
   };
+
 
   const handleAnswer = (correct: boolean, feedbackText: string) => {
     setPerformanceData(prev => [...prev, { question: currentChallenge.question, correct }]);
