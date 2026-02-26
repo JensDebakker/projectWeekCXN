@@ -1,1 +1,98 @@
-main page file
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConXion — Project Week</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+                <rect width="100" height="100" rx="22" fill="url(#g1)" fill-opacity=".15" />
+                <path d="M30 30L70 70M70 30L30 70" stroke="url(#g1)" stroke-width="13" stroke-linecap="round" />
+                <defs>
+                    <linearGradient id="g1" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#38bdf8" />
+                        <stop offset="1" stop-color="#818cf8" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="logo-text">Con<span>X</span>ion</div>
+        </div>
+        <p class="tagline">Project Week</p>
+        <h1 class="hero-title">Cybersecurity Awareness</h1>
+        <p class="hero-sub">Choose a module below to start learning. Each module covers a key area of digital security.
+        </p>
+    </header>
+
+    <div class="grid">
+
+        <!-- Module 1 — live -->
+        <a href="Module1-EmailPhishing/index.html" class="module-card active">
+            <div class="card-number">Module 01</div>
+            <div class="card-icon">🎣</div>
+            <div class="card-title">Email Phishing</div>
+            <div class="card-desc">Learn to spot phishing emails. Analyse real vs fake messages and rack up points by
+                identifying the red flags.</div>
+            <div class="card-badge badge-live">● Live</div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <!-- Module 2 — placeholder -->
+        <div class="module-card placeholder">
+            <div class="card-number">Module 02</div>
+            <div class="card-icon">🤖</div>
+            <div class="card-title">AI & Deepfakes</div>
+            <div class="card-desc">Understand how AI-generated content and deepfakes are used in social engineering
+                attacks.</div>
+            <div class="card-badge badge-soon">Coming soon</div>
+        </div>
+
+        <!-- Module 3 — placeholder -->
+        <div class="module-card placeholder">
+            <div class="card-number">Module 03</div>
+            <div class="card-icon">🔐</div>
+            <div class="card-title">Password Security</div>
+            <div class="card-desc">Find out what makes a password strong and how credential attacks like brute force
+                actually work.</div>
+            <div class="card-badge badge-soon">Coming soon</div>
+        </div>
+
+        <!-- Module 4 — placeholder -->
+        <div class="module-card placeholder">
+            <div class="card-number">Module 04</div>
+            <div class="card-icon">📱</div>
+            <div class="card-title">Social Engineering</div>
+            <div class="card-desc">Recognise manipulation tactics used over phone, text and social media to steal
+                information.</div>
+            <div class="card-badge badge-soon">Coming soon</div>
+        </div>
+
+        <!-- Module 5 — placeholder -->
+        <div class="module-card placeholder">
+            <div class="card-number">Module 05</div>
+            <div class="card-icon">🌐</div>
+            <div class="card-title">Safe Browsing</div>
+            <div class="card-desc">Spot dangerous websites, understand HTTPS, and learn how to avoid drive-by malware.
+            </div>
+            <div class="card-badge badge-soon">Coming soon</div>
+        </div>
+
+    </div>
+
+    <footer>
+        ConXion &nbsp;·&nbsp; Project Week &nbsp;·&nbsp; 2026
+    </footer>
+
+</body>
+
+</html>
