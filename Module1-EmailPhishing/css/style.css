@@ -1,14 +1,14 @@
 :root {
-    --primary: #38bdf8;
-    --primary-hover: #0284c7;
-    --secondary: #818cf8;
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --secondary: #6366f1;
     --success: #10b981;
     --danger: #ef4444;
-    --bg-dark: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --bg-page: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
 }
 
 * {
@@ -19,10 +19,7 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-dark);
-    background-image:
-        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(129, 140, 248, 0.15), transparent 25%);
+    background-color: var(--bg-page);
     min-height: 100vh;
     color: var(--text-primary);
     overflow-x: hidden;
@@ -34,7 +31,7 @@ body {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
 }
 
@@ -104,7 +101,7 @@ body {
     width: 100%;
     padding: 16px 20px;
     margin-bottom: 25px;
-    background: rgba(15, 23, 42, 0.6);
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 12px;
     font-size: 16px;
@@ -203,7 +200,7 @@ body {
 
 /* Top Bar */
 .top-bar {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
@@ -306,7 +303,7 @@ body {
     word-break: break-all;
     margin: 0;
     font-family: monospace;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.05);
     padding: 4px 10px;
     border-radius: 6px;
 }
@@ -315,11 +312,11 @@ body {
     white-space: pre-line;
     line-height: 1.7;
     color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.03);
     padding: 25px;
     border-radius: 12px;
     font-size: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .question-text {
@@ -345,10 +342,10 @@ body {
     font-weight: 600;
     margin-bottom: 20px;
     min-height: 27px;
-    color: white;
+    color: var(--text-primary);
     padding: 12px 16px;
     border-radius: 8px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.5);
     border: 1px solid var(--border-color);
     transition: opacity 0.3s;
 }
@@ -533,6 +530,7 @@ body {
     font-weight: 700;
     margin-bottom: 24px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
