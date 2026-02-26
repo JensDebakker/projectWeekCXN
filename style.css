@@ -20,7 +20,7 @@
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-dark);
-    background-image: 
+    background-image:
         radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(129, 140, 248, 0.15), transparent 25%);
     min-height: 100vh;
@@ -66,6 +66,7 @@ body {
 
 .logo-text span {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -143,7 +144,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.5s ease;
 }
 
@@ -345,16 +346,11 @@ body {
     margin-bottom: 20px;
     min-height: 27px;
     color: white;
-    padding: 10px;
+    padding: 12px 16px;
     border-radius: 8px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
-    opacity: 0;
     transition: opacity 0.3s;
-}
-
-.feedback.show {
-    opacity: 1;
 }
 
 .feedback.correct {
@@ -380,6 +376,7 @@ body {
     font-size: 42px;
     font-weight: 800;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -390,12 +387,200 @@ body {
     margin-bottom: 40px;
 }
 
+/* ── Language Switch Slider ───────────────────────────────────────────────── */
+.lang-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 4px;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.lang-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 40px;
+    height: calc(100% - 8px);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 20px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 10px rgba(56, 189, 248, 0.45);
+    pointer-events: none;
+}
+
+.lang-switch.active-nl .lang-thumb {
+    transform: translateX(40px);
+}
+
+.lang-opt {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    transition: color 0.25s ease;
+    border-radius: 20px;
+}
+
+.lang-switch.active-en .lang-opt[data-val="en"],
+.lang-switch.active-nl .lang-opt[data-val="nl"] {
+    color: #ffffff;
+}
+
+/* ── Checklist Panel ─────────────────────────────────────────────────────── */
+.clues-panel {
+    margin-bottom: 20px;
+    padding: 24px 28px;
+}
+
+.clues-heading {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.clue-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.2s;
+}
+
+.clue-item.clue-right {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.clue-item.clue-missed {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.clue-item.clue-wrong {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.clue-item.clue-neutral {
+    background: rgba(148, 163, 184, 0.05);
+    border-color: rgba(148, 163, 184, 0.15);
+}
+
+.clue-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.clue-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.clue-badge {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.07);
+    flex-shrink: 0;
+}
+
+.clue-result {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* ── End-game Result ─────────────────────────────────────────────────────── */
+.end-message {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.end-scores {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.end-score-main {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.end-score-main span {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    -webkit-text-fill-color: var(--text-secondary);
+}
+
+.end-score-pct {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-secondary);
+}
+
+.end-detail {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
 /* Animations */
 @keyframes slideUp {
     from {
         opacity: 0;
         transform: translateY(30px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -403,16 +588,25 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
-    .card, .email-card, #final-score-container {
+
+    .card,
+    .email-card,
+    #final-score-container {
         padding: 30px 20px;
     }
 
-    .btn-real, .btn-phishing {
+    .btn-real,
+    .btn-phishing {
         width: 100%;
         margin: 5px 0;
     }
@@ -422,7 +616,7 @@ body {
         gap: 15px;
         align-items: flex-start;
     }
-    
+
     .email-field {
         flex-direction: column;
         gap: 5px;

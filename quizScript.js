@@ -1,6 +1,6 @@
 /**
- * Quiz Script - Handles phishing awareness quiz logic
- * Includes real and fake emails with various phishing tactics
+ * Quiz Script - Phishing Awareness Quiz
+ * 13 high-quality email scenarios, 6 questions per game, max 30 points
  */
 
 class Email {
@@ -9,371 +9,423 @@ class Email {
         this.subject = subject;
         this.body = body;
         this.isReal = isReal;
-        this.tactics = tactics;
+        this.tactics = tactics; // Array of { label, correct } objects
     }
 }
 
-// Database of emails - Challenging mix with varied patterns
+// ─── EMAIL DATABASE ────────────────────────────────────────────────────────────
 const emails = [
-    // REAL EMAILS
+
+    // ── REAL EMAILS ──────────────────────────────────────────────────────────
+
     new Email(
-        "notifications@github.com",
-        "You have a new follower",
-        "Hi there,\n\nuser123 started following you on GitHub!\n\nCheck out their profile:\nhttps://github.com/user123",
+        "no-reply@github.com",
+        "[GitHub] A new public key was added to your account",
+        "Hi alexdev,\n\nA new SSH public key was added to your GitHub account.\n\nKey fingerprint: SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s\nAdded: February 26, 2026 at 09:14 UTC\nDevice: MacBook Pro — Berlin, Germany\n\nIf you added this key yourself, no action is required.\n\nIf you did NOT add this key, please remove it immediately from your account settings and consider changing your password and enabling two-factor authentication.\n\nYou can manage your SSH keys at: github.com/settings/keys\n\n— The GitHub Team",
         true
     ),
 
     new Email(
-        "apple-noreply@apple.com",
-        "Your app has been approved",
-        "Congratulations! Your app \"TaskMaster\" has been approved for the App Store.\n\nIt will be available to download in approximately 30 minutes.\n\nVisit App Store Connect to manage your app.",
+        "receipts@stripe.com",
+        "Your receipt from Stripe, Inc.",
+        "Hello Jamie,\n\nThank you for your payment. Here is your receipt.\n\nReceipt #: 1023-4892\nDate: February 25, 2026\nDescription: Stripe Pro Plan — Monthly\nAmount: $59.00 USD\n\nThis charge will appear on your statement as STRIPE*INVOICE.\n\nYou can view and download this receipt from your Stripe Dashboard under Billing > Invoices.\n\nIf you have any questions about this charge, please contact our support team at support.stripe.com.\n\nThank you,\nStripe, Inc.",
         true
     ),
 
     new Email(
-        "support@dropbox.com",
-        "New device sign-in",
-        "Your Dropbox account was recently accessed from a new device:\n\nDevice: MacBook Pro\nLocation: San Francisco, CA\nTime: Feb 26 at 2:30 PM\n\nIf this was you, you can ignore this message. If not, secure your account and change your password.",
+        "noreply@linkedin.com",
+        "You appeared in 14 searches this week",
+        "Hi Sophie,\n\nGreat news — your profile is getting attention!\n\nYou appeared in 14 searches this week. Recruiters and professionals are looking at your profile.\n\nHere's a summary of your profile activity:\n• Search appearances: 14\n• Profile views: 7\n• Post impressions: 312\n\nWant to see who viewed your profile? Upgrade to LinkedIn Premium to unlock full viewer details and stand out to recruiters.\n\nView your full dashboard: linkedin.com/me/profile-views\n\nThe LinkedIn Team",
         true
     ),
 
     new Email(
-        "noreply@stackoverflow.com",
-        "Weekly digest: Your top questions",
-        "Hello Developer,\n\nHere's your weekly summary of Stack Overflow activity. You received 45 upvotes this week.\n\nTop question:\n\"How to center a div with CSS?\"\n\nView your activity here: https://stackoverflow.com/users/dashboard",
+        "support@paypal.com",
+        "You sent a payment of €120.00 to Marcus Becker",
+        "Hello Chris,\n\nYou sent a payment of €120.00 to Marcus Becker (m.becker@gmail.com) on February 26, 2026 at 11:02 AM CET.\n\nTransaction ID: 9BG47283PX1234562\nNote: \"Rent — February\"\n\nIf you authorised this payment, you don't need to do anything.\n\nIf you didn't authorise this payment, please open a dispute in the PayPal Resolution Centre immediately. Acting quickly gives us the best chance of recovering your funds.\n\nResolution Centre: paypal.com/disputes\n\nThank you,\nPayPal Customer Support",
         true
     ),
 
     new Email(
-        "billing@stripe.com",
-        "Your Stripe balance is ready to payout",
-        "Your account balance of $2,450 is ready to transfer. Payouts occur every Friday to your connected bank account ending in 4242.\n\nNo action needed.",
+        "no-reply@accounts.google.com",
+        "Security alert: New sign-in on Windows",
+        "Hi Tom,\n\nYour Google Account (tom.harrison@gmail.com) was signed in to on a new Windows device.\n\nWednesday, February 26, 2026 — 08:53 AM (CET)\nBrowser: Chrome 122\nLocation: Amsterdam, Netherlands\n\nIf this was you, you don't need to take any action.\n\nIf this wasn't you, your account may be compromised. We recommend you:\n1. Change your password immediately\n2. Review your recent activity at myaccount.google.com/security\n3. Enable 2-Step Verification if you haven't already\n\nThe Google Accounts team",
         true
     ),
 
     new Email(
-        "no-reply@twitch.tv",
-        "A channel you follow is now live",
-        "TechStreamer is now streaming \"Coding in Rust\"\n\nWatch now: https://twitch.tv/TechStreamer",
+        "info@notion.so",
+        "Your Notion workspace is running low on storage",
+        "Hi Clara,\n\nYour Notion workspace \"Clara's Projects\" has used 90% of its available storage (9.1 GB of 10 GB).\n\nWhen your workspace reaches 100%, you'll no longer be able to upload files or attachments.\n\nTo keep your workflow running smoothly, you can:\n• Upgrade to Notion Plus for 250 GB of storage\n• Delete unused files and attachments from your pages\n• Export and archive older workspaces\n\nManage your storage: notion.so/settings/account\n\nHave questions? Reply to this email or visit our help centre at notion.so/help.\n\nThanks,\nThe Notion Team",
         true
     ),
 
-    new Email(
-        "account@zoom.us",
-        "Your meeting recording is ready",
-        "Your Zoom meeting from Feb 25 has been successfully recorded and is now available.\n\nAccess your recording: https://zoom.us/recording/mymeeting123\n\nRecordings are kept for 1 month.",
-        true
-    ),
+    // ── PHISHING EMAILS ───────────────────────────────────────────────────────
 
     new Email(
-        "community@slack.com",
-        "You're invited to a beta feature",
-        "We're testing a new feature for power users. Click below to join the beta:\n\nhttps://slack.com/beta/feature-test",
-        true
-    ),
-
-    // PHISHING EMAILS - Varied and challenging
-    new Email(
-        "support@appel-id.com",
-        "Your Apple ID requires attention",
-        "Click here to update your Apple ID security settings:\n\nhttp://appel-id-secure.com/verify",
+        "security-alert@paypa1-support.com",
+        "Urgent: Unusual Login Detected — Verify Your Account Now",
+        "Dear PayPal Member,\n\nWe have detected an unauthorised login attempt on your PayPal account from an unrecognised device located in Romania.\n\nTo protect your account, we have temporarily limited your access. You will not be able to send or receive payments until your identity is verified.\n\nPlease verify your account within 24 hours to restore full access:\n[Verify My Account — paypa1-support.com/verify]\n\nIf you do not complete verification, your account will be permanently suspended and any pending balance may be held for up to 180 days.\n\nThank you for your cooperation,\nPayPal Account Security Team",
         false,
-        ["Misspelled domain (appel)", "Suspicious link"]
+        [
+            { label: "The sender's email address looks suspicious or unexpected", correct: true },
+            { label: "The email creates extreme urgency and threatens severe consequences", correct: true },
+            { label: "You are not addressed by your real name", correct: true },
+            { label: "The email asks you to click a link to verify or log in", correct: true },
+            { label: "Mentioning a foreign country in a security alert is always a sign of phishing", correct: false }
+        ]
     ),
 
     new Email(
-        "paypa1support@email.com",
-        "Update Your Account",
-        "Please verify your account by clicking the link below:\nhttp://paypal-secure-verify.tk/account",
+        "hr-department@your-company-portal.net",
+        "Action Required: Update Your Payroll Bank Details Before Friday",
+        "Dear Employee,\n\nAs part of our quarterly payroll system upgrade, all staff are required to re-confirm their bank account details by this Friday, 28 February 2026.\n\nFailure to do so may result in a delay to your next salary payment.\n\nPlease log in to the employee portal using your company credentials and update your information:\n[Update Bank Details — your-company-portal.net/payroll]\n\nThis process takes less than 2 minutes. If you have any issues accessing the portal, please contact HR directly.\n\nKind regards,\nHuman Resources Department",
         false,
-        ["Generic greeting", "Suspicious TLD", "Generic subject"]
+        [
+            { label: "The sender's email domain does not match the expected organisation", correct: true },
+            { label: "The email requests sensitive financial information via a link", correct: true },
+            { label: "A deadline is used to pressure you into acting quickly", correct: true },
+            { label: "Good grammar and a professional tone means the email is safe", correct: false },
+            { label: "Organisations never send emails asking you to update personal details", correct: false }
+        ]
     ),
 
     new Email(
-        "noreply@micr0soft.com",
-        "Your Microsoft account activity",
-        "We noticed a sign-in from Ukraine at 3:45 AM.\n\nWas this you? http://microsoft-verify.info/check-activity\n\nIf not, secure your account immediately.",
+        "noreply@micros0ft-account.com",
+        "Your Microsoft 365 subscription has expired",
+        "Dear Microsoft Customer,\n\nYour Microsoft 365 subscription expired on February 24, 2026. As a result, your access to Word, Excel, Outlook, and OneDrive has been suspended.\n\nTo avoid permanent data loss, please renew your subscription within 72 hours. After this period, your files stored in OneDrive may be deleted.\n\nRenew Now to restore access:\n[Renew Subscription — micros0ft-account.com/renew]\n\nIf you have already renewed your subscription, please disregard this notice.\n\nThank you,\nMicrosoft Account Team",
         false,
-        ["Domain typo (micr0soft)", "Fake location threat", "Urgent tone"]
+        [
+            { label: "The sender's email address does not come from the official company domain", correct: true },
+            { label: "The email threatens data loss to cause panic", correct: true },
+            { label: "No account-specific details (name, account ID) are included", correct: true },
+            { label: "Mentioning well-known software products proves the email is real", correct: false },
+            { label: "All subscription expiry emails are sent with a 72-hour warning", correct: false }
+        ]
     ),
 
     new Email(
-        "admin@co1npany.net",
-        "HR Department: Updated Benefits",
-        "Employee,\n\nWe have updated the benefits portal. Please log in to view your new health insurance options:\n\nhttp://company-benefits-portal.tk\n\nLogin credentials are the same as before.",
+        "awards@google-rewards-2026.com",
+        "Congratulations! You Have Been Selected for a Google Reward",
+        "Dear Google User,\n\nYou have been randomly selected as one of our February 2026 loyalty reward winners!\n\nAs a valued Google user, you are entitled to claim a €750 Google Play gift card as a thank-you for your continued use of Google services.\n\nTo claim your reward, simply complete a short 3-question survey and provide your delivery details:\n[Claim Your Reward — google-rewards-2026.com/claim]\n\nThis offer expires in 48 hours. Only one claim per person is permitted.\n\nCongratulations once again,\nThe Google Rewards Team",
         false,
-        ["Typo domain (co1mpany)", "Credential request", "Generic greeting"]
+        [
+            { label: "Unexpected prize or reward offers are a common trick to lure victims", correct: true },
+            { label: "The sender's email address does not belong to the company it claims to be", correct: true },
+            { label: "The email creates time pressure with a strict deadline", correct: true },
+            { label: "You are not addressed by your personal name", correct: true },
+            { label: "Completing an online survey is always a safe activity", correct: false }
+        ]
     ),
 
     new Email(
-        "service@bank-of-amrica.com",
-        "Suspicious Account Activity",
-        "We detected an unauthorized transaction of $599.99 to \"StreamingService\" charged to your account 2 days ago.\n\nReview the transaction:\nhttp://boa-verify-transaction.net/review\n\nYour account may be frozen pending verification.",
+        "it-helpdesk@corp-it-support.org",
+        "IT Notice: Your Password Expires in 2 Hours — Reset Required",
+        "Hello,\n\nOur system has detected that your company account password will expire in approximately 2 hours. Once expired, you will lose access to all company systems, including email, SharePoint, and the VPN.\n\nPlease reset your password immediately using the link below before you are locked out:\n[Reset Password Now — corp-it-support.org/reset]\n\nIf you have already reset your password in the last 24 hours, please ignore this message.\n\nFor assistance, contact the IT Helpdesk.\n\nThank you,\nCorporate IT Support",
         false,
-        ["Domain typo (amrica)", "Real-sounding incident", "Creates urgency"]
+        [
+            { label: "The sender's email domain does not match the expected organisation", correct: true },
+            { label: "An extremely short deadline is designed to stop you from thinking carefully", correct: true },
+            { label: "The email does not address you by your name", correct: true },
+            { label: "Internal IT emails are always trustworthy and safe to act on", correct: false }
+        ]
     ),
 
     new Email(
-        "linkedin.verification@verify-linkedin.net",
-        "Confirm Your Professional Information",
-        "To maintain your LinkedIn premium access, please re-verify your professional identity.\n\nVerify now: http://linkedin-verify-pro.tk",
+        "billing@netfl1x-accounts.com",
+        "Your Netflix Membership Has Been Paused",
+        "Dear Netflix Member,\n\nWe were unable to process your latest payment and your Netflix membership has been paused.\n\nStreaming will remain unavailable until your billing information is updated. To avoid losing your profile, viewing history, and My List, please update your payment method as soon as possible.\n\nUpdate Your Payment Details:\n[Update Now — netfl1x-accounts.com/billing]\n\nIf you believe this is an error, please contact Netflix Support.\n\nWarm regards,\nThe Netflix Billing Team",
         false,
-        ["Fake subdomain structure", "Unusual TLD"]
+        [
+            { label: "The sender's email address does not come from the official company domain", correct: true },
+            { label: "The email threatens loss of personal data to create fear", correct: true },
+            { label: "You are not addressed by your real account name", correct: true },
+            { label: "Billing-related emails are always sent by real companies", correct: false }
+        ]
     ),
 
     new Email(
-        "noreply@amazn.com",
-        "Your package has arrived",
-        "Your Amazon delivery from today is waiting at your door!\n\nTrack your package: http://amazon-track.tk/order123",
+        "support@dh1-mail.org",
+        "DHL Shipment On Hold — Customs Fee Required",
+        "Dear Customer,\n\nYour DHL parcel (Tracking: JD014600014414792) is currently on hold at our customs facility.\n\nA customs clearance fee of €2.99 is required before your parcel can be released and delivered. This is a standard customs processing charge applied to international shipments.\n\nPlease pay the fee within 3 days to avoid the parcel being returned to the sender:\n[Pay Customs Fee — dh1-mail.org/customs-pay]\n\nDelivery Details:\nEstimated Delivery: March 1 – 3, 2026\nDestination: Your registered address\n\nThank you for choosing DHL,\nDHL Customer Services",
         false,
-        ["Subtle domain typo (amazn)", "Seems legitimate", "Tracking link phishing"]
-    ),
-
-    new Email(
-        "verify@g00gle.com",
-        "Google Account Security Alert",
-        "Someone just used your password to try to sign in to your Google Account.\n\nSecure your account now: http://google-verify-security.com",
-        false,
-        ["Zero instead of O", "Security threat theme"]
-    ),
-
-    new Email(
-        "noreply@netflix.com",
-        "Your payment method is expiring",
-        "Update your payment method",
-        true
-    ),
-
-    new Email(
-        "billing@steam-communnity.com",
-        "Confirm your Steam Guard settings",
-        "Steam detected a new device attempt. To protect your account:\n\nClick here: http://steam-guard-verify.tk/confirm",
-        false,
-        ["Misspelled domain (communnity)", "Device security threat"]
-    ),
-
-    new Email(
-        "support@adobe.io",
-        "Your Creative Cloud subscription expires next month",
-        "Your Adobe Creative Cloud membership will expire on March 26, 2026.\n\nRenew your subscription to keep using Photoshop, Illustrator, and more.\n\nhttps://account.adobe.com/plans\n\nBest regards,\nAdobe Support Team",
-        true
-    ),
-
-    new Email(
-        "no-reply@instagram.com",
-        "Someone liked your photo",
-        "jessica_smith liked your photo.\n\nhttps://instagram.com/p/ABC123",
-        true
-    ),
-
-    new Email(
-        "admin@yourcompny.internal",
-        "Password update required",
-        "Due to security policies, Windows domain passwords must be updated every 90 days. Your password is expiring.\n\nUpdate here: http://compny-password-reset.local\n\nUse your current username and password to reset it.",
-        false,
-        ["Internal-looking domain", "Legitimate-sounding policy", "Current credentials request"]
-    ),
-
-    new Email(
-        "rewards@amz0n-exclusive.net",
-        "Exclusive Member Reward",
-        "As an Amazon Prime member, you've been selected for our rewards program!\n\nClaim $250 in Amazon credit:\nhttp://amazon-rewards-exclusive.tk\n\nOffer valid for 48 hours only!",
-        false,
-        ["Typo domain (amz0n)", "Reward/prize scam", "Time-limited offer"]
-    ),
-
-    new Email(
-        "noreply@reddit.com",
-        "Top post in r/programming",
-        "Hi,\n\nYour post received 15k upvotes in r/programming.\n\nView your post: https://reddit.com/r/programming/comments/abc123",
-        true
-    ),
-
-    new Email(
-        "uber@uberinc.net",
-        "Your account has unusual activity",
-        "We noticed your Uber account was used for rides in a different city.\n\nWas this you? Verify here: http://uber-verify-activity.tk\n\nIf not, change your password immediately.",
-        false,
-        ["Suspicious domain (uberinc.net)", "Unusual activity alarm", "Urgency tactic"]
-    ),
-
-    new Email(
-        "docusign-electronicsignature@verify-account.com",
-        "Your DocuSign signature required",
-        "A document requires your electronic signature.\n\nSign the document: http://docusign-verify-signature.tk\n\nThis request expires in 24 hours.",
-        false,
-        ["Fake DocuSign domain", "Time pressure", "Signature request phishing"]
-    ),
-
-    new Email(
-        "alert@coinbase.co",
-        "Your account is temporarily limited",
-        "Due to suspicious activity, your Coinbase account has been limited.\n\nRestore access:\nhttp://coinbase-restore-access.net/verify",
-        false,
-        ["Cryptocurrency scam", "Account limitation threat", "Restoration prompt"]
-    ),
-
-    new Email(
-        "noreply@wordpress.com",
-        "Your blog post was scheduled",
-        "Your scheduled post \"10 Web Design Tips\" will be published tomorrow at 9 AM.\n\nView settings: https://wordpress.com/dashboard",
-        true
-    ),
-
-    new Email(
-        "payroll@company.org",
-        "Current month payslip attached",
-        "Please find your payslip for February 2026 attached. Contact HR if you have any questions.\n\nGross Pay: $5,250\nNet Pay: $3,890",
-        true
-    ),
-
-    new Email(
-        "verify@face-book.com",
-        "Verify your Facebook account",
-        "We've detected unusual activity. Please verify your identity:\n\nhttp://facebook-verify-id.tk\n\nEnter your email and password to continue.",
-        false,
-        ["Domain typo (face-book)", "Credential harvesting", "Verification demand"]
-    ),
-
-    new Email(
-        "noreply@canva.design",
-        "Your design is ready to share",
-        "Your Canva design \"Social Media Post\" is complete and ready to download.\n\nDownload: https://canva.design/download/xyz123",
-        true
-    ),
-
-    new Email(
-        "support@wellsfargo-online.com",
-        "Review your recent transactions",
-        "We have detected 3 transactions from your Wells Fargo account that may need review:\n\n1. $199 - Target\n2. $45 - Shell Gas\n3. $1,200 - Wire Transfer (Suspicious)\n\nReview transactions: http://wf-review-secure.tk",
-        false,
-        ["Misspelled domain (wellsfargo-online)", "Legitimate-sounding transaction list", "One suspicious item to trigger action"]
-    ),
-
-    new Email(
-        "noreply@evernote.com",
-        "You shared a note",
-        "You shared the note \"Meeting Notes - Q1 Planning\" with john@company.com\n\nThey can now view and edit the note.",
-        true
-    ),
-
-    new Email(
-        "security.alert@goggle.com",
-        "Suspicious sign-in attempt blocked",
-        "We detected and blocked a sign-in attempt from Russia using your password.\n\nIf this wasn't you, change your password: http://google-security-change-pwd.tk",
-        false,
-        ["Domain typo (goggle)", "Fake geography threat", "Password change link"]
-    ),
-
-    new Email(
-        "noreply@airbnb.com",
-        "Your reservation is confirmed",
-        "Great news! Your reservation for \"Cozy Apartment in NYC\" has been confirmed.\n\nCheck-in: March 1, 2026\nHost: Maria G.\nPrice: $280 total\n\nView reservation: https://airbnb.com/reservations/abc123",
-        true
+        [
+            { label: "The sender's email address does not match the official company domain", correct: true },
+            { label: "Asking you to pay a small unexpected fee via a link is a common trick", correct: true },
+            { label: "A deadline is used to rush you into paying without checking", correct: true },
+            { label: "No personal details (name, address) are included in the email", correct: true },
+            { label: "Small payment amounts (under €5) are never part of a scam", correct: false }
+        ]
     )
 ];
 
-// Game variables
+// ─── GAME VARIABLES ────────────────────────────────────────────────────────────
+const QUIZ_LENGTH = 6;
+const MAX_SCORE = QUIZ_LENGTH * 5; // 30 points total
+
 let currentEmailIndex = 0;
 let score = 0;
-let quizEmails = []; // Will be populated with 10 random emails
-const QUIZ_LENGTH = 10;
+let quizEmails = [];
+let clueSubmitted = false;
 
-// DOM elements
-const welcomeEl = document.getElementById("welcome");
-const scoreDisplayEl = document.getElementById("score-display");
-const fromEl = document.getElementById("from");
-const subjectEl = document.getElementById("subject");
-const bodyEl = document.getElementById("body");
-const feedbackEl = document.getElementById("feedback");
-const nextBtnEl = document.getElementById("next-btn");
+// ─── DOM ELEMENTS ──────────────────────────────────────────────────────────────
+const welcomeEl             = document.getElementById("welcome");
+const scoreDisplayEl        = document.getElementById("score-display");
+const fromEl                = document.getElementById("from");
+const subjectEl             = document.getElementById("subject");
+const bodyEl                = document.getElementById("body");
+const feedbackEl            = document.getElementById("feedback");
+const nextBtnEl             = document.getElementById("next-btn");
 const finalScoreContainerEl = document.getElementById("final-score-container");
-const finalScoreEl = document.getElementById("final-score");
-const restartBtnEl = document.getElementById("restart-btn");
-const emailCardEl = document.querySelector(".email-card");
-const buttonsEl = document.querySelector(".buttons");
-const progressFillEl = document.getElementById("progress-fill");
+const finalScoreEl          = document.getElementById("final-score");
+const emailCardEl           = document.querySelector(".email-card");
+const buttonsEl             = document.querySelector(".buttons");
+const progressFillEl        = document.getElementById("progress-fill");
 
-/**
- * Initialize the quiz
- */
+// ─── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
     const playerName = localStorage.getItem("playerName");
-
     if (!playerName) {
         window.location.href = "index.html";
         return;
     }
 
-    // Create a copy of all emails and shuffle
     quizEmails = [...emails];
     shuffleArray(quizEmails);
-    
-    // Select only first 10 emails
     quizEmails = quizEmails.slice(0, QUIZ_LENGTH);
 
-    welcomeEl.textContent = `🎮 Player: ${playerName}`;
+    currentEmailIndex = 0;
+    score = 0;
+
+    // Apply saved language, wire up the slider, and refresh dynamic text on switch
+    i18n.initSwitches();
+    document.addEventListener("i18n:change", () => {
+        welcomeEl.textContent = `${i18n.t("welcomePrefix")} ${playerName}`;
+        updateScoreDisplay();
+    });
+
+    welcomeEl.textContent = `${i18n.t("welcomePrefix")} ${playerName}`;
+    updateScoreDisplay();
     loadEmail();
 }
 
-/**
- * Load current email
- */
+// ─── LOAD EMAIL ────────────────────────────────────────────────────────────────
 function loadEmail() {
     const email = quizEmails[currentEmailIndex];
 
-    fromEl.textContent = email.from;
-    subjectEl.textContent = email.subject;
-    bodyEl.textContent = email.body;
+    fromEl.textContent     = email.from;
+    subjectEl.textContent  = email.subject;
+    bodyEl.textContent     = email.body;
 
-    // Update progress bar
     updateProgressBar();
 
-    // Reset feedback
-    feedbackEl.textContent = "";
-    feedbackEl.className = "feedback";
+    // Reset feedback & UI
+    feedbackEl.textContent  = "";
+    feedbackEl.className    = "feedback";
     nextBtnEl.style.display = "none";
+    clueSubmitted           = false;
 
-    // Enable buttons
+    removeExtras();
+
+    // Re-enable answer buttons
     document.querySelectorAll(".btn-real, .btn-phishing").forEach(btn => {
-        btn.disabled = false;
+        btn.disabled  = false;
+        btn.style.opacity = "1";
     });
 }
 
-/**
- * Handle answer selection
- */
+// ─── ANSWER ───────────────────────────────────────────────────────────────────
 function answer(choice) {
-    const email = quizEmails[currentEmailIndex];
+    const email     = quizEmails[currentEmailIndex];
     const isCorrect = (choice === "real" && email.isReal) || (choice === "phishing" && !email.isReal);
 
-    // Disable buttons
+    // Disable answer buttons
     document.querySelectorAll(".btn-real, .btn-phishing").forEach(btn => {
-        btn.disabled = true;
+        btn.disabled      = true;
+        btn.style.opacity = "0.5";
     });
 
-    if (isCorrect) {
-        feedbackEl.textContent = "✅ Correct!";
-        feedbackEl.className = "feedback correct";
-        score++;
-    } else {
-        const correct = email.isReal ? "REAL" : "PHISHING";
-        feedbackEl.textContent = "❌ Incorrect! This was " + correct + ".";
-        feedbackEl.className = "feedback incorrect";
+    removeExtras();
+
+    // ── Scenario 1: Correctly identified as real ─────────────────────────────
+    if (isCorrect && email.isReal) {
+        score += 5;
+        updateScoreDisplay();
+        showFeedback(i18n.t("correctReal"), "correct");
+        nextBtnEl.style.display = "inline-block";
+        return;
     }
 
-    // Update score display
+    // ── Scenario 2: Called real but it was phishing ──────────────────────────
+    if (!isCorrect && !email.isReal) {
+        showFeedback(i18n.t("incorrectPhishing"), "incorrect");
+        buildChecklist(email, false);
+        return;
+    }
+
+    // ── Scenario 3: Called phishing but it was real ──────────────────────────
+    if (!isCorrect && email.isReal) {
+        showFeedback(i18n.t("incorrectReal"), "incorrect");
+        nextBtnEl.style.display = "inline-block";
+        return;
+    }
+
+    // ── Scenario 4: Correctly identified as phishing (+1 for the ID, +4 from checklist) ──
+    if (isCorrect && !email.isReal) {
+        score += 1; // 1 point for correctly spotting it's phishing
+        updateScoreDisplay();
+        showFeedback(i18n.t("correctPhishing"), "correct");
+        buildChecklist(email, true);
+    }
+}
+
+// ─── BUILD CHECKLIST ──────────────────────────────────────────────────────────
+function buildChecklist(email, canScore) {
+    const cluesDiv = document.createElement("div");
+    cluesDiv.id        = "phishing-clues";
+    cluesDiv.className = "glass-panel clues-panel";
+
+    const heading = document.createElement("p");
+    heading.className = "clues-heading";
+
+    // ── No-score path: user said real but it was phishing ─────────────────────
+    // Only show the ACTUAL red flags (correct: true) — not the distractors.
+    if (!canScore) {
+        heading.textContent = i18n.t("clueHeadingReveal");
+        cluesDiv.appendChild(heading);
+
+        email.tactics
+            .filter(tactic => tactic.correct)   // ← only real red flags
+            .forEach(tactic => {
+                const item = document.createElement("div");
+                item.className = "clue-item clue-right";
+
+                const badge = document.createElement("span");
+                badge.className   = "clue-badge";
+                badge.textContent = i18n.t("badgeRedFlag");
+
+                item.appendChild(document.createTextNode(tactic.label));
+                item.appendChild(badge);
+                cluesDiv.appendChild(item);
+            });
+
+        feedbackEl.parentNode.insertBefore(cluesDiv, nextBtnEl);
+        nextBtnEl.style.display = "inline-block";
+        return;
+    }
+
+    // ── Scoring path: user correctly identified phishing ──────────────────────
+    heading.textContent = i18n.t("clueHeadingScore");
+    cluesDiv.appendChild(heading);
+
+    const form = document.createElement("form");
+    form.id = "clue-form";
+
+    email.tactics.forEach((tactic, i) => {
+        const item = document.createElement("div");
+        item.className = "clue-item";
+
+        const label = document.createElement("label");
+        label.className = "clue-label";
+
+        const cb = document.createElement("input");
+        cb.type  = "checkbox";
+        cb.name  = "clue";
+        cb.value = i;
+
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(" " + tactic.label));
+        item.appendChild(label);
+        form.appendChild(item);
+    });
+
+    cluesDiv.appendChild(form);
+
+    const submitBtn = document.createElement("button");
+    submitBtn.id          = "clue-submit-btn";
+    submitBtn.textContent = i18n.t("clueSubmit");
+    submitBtn.className   = "btn btn-primary";
+    submitBtn.onclick     = function(e) {
+        e.preventDefault();
+        submitChecklist(email, cluesDiv, submitBtn);
+    };
+    cluesDiv.appendChild(submitBtn);
+
+    feedbackEl.parentNode.insertBefore(cluesDiv, nextBtnEl);
+}
+
+// ─── SUBMIT CHECKLIST ─────────────────────────────────────────────────────────
+// Scoring: checklist is worth 4 points (the 5th point was awarded for identifying phishing).
+// Each item is worth 4/totalItems points. Perfect score on checklist = exactly 4pts → total 5/5.
+// Picking a distractor cancels one correct answer point.
+function submitChecklist(email, cluesDiv, submitBtn) {
+    if (clueSubmitted) return;
+    clueSubmitted = true;
+    submitBtn.disabled = true;
+
+    const form       = document.getElementById("clue-form");
+    const checkboxes = Array.from(form.elements["clue"]);
+    const totalItems = checkboxes.length;
+
+    let correctActions  = 0; // checked a real flag OR skipped a distractor
+    let incorrectActions = 0; // checked a distractor OR missed a real flag
+
+    // Reveal results per item
+    checkboxes.forEach((cb, i) => {
+        const tactic  = email.tactics[i];
+        const checked = cb.checked;
+        const item    = cb.closest(".clue-item");
+
+        cb.disabled = true;
+
+        const badge = document.createElement("span");
+        badge.className = "clue-badge";
+
+        if (tactic.correct && checked) {
+            // ✅ Spotted a real red flag
+            item.classList.add("clue-right");
+            badge.textContent = i18n.t("badgeCorrectFlag");
+            correctActions++;
+        } else if (tactic.correct && !checked) {
+            // ❌ Missed a real red flag
+            item.classList.add("clue-missed");
+            badge.textContent = i18n.t("badgeMissed");
+            incorrectActions++;
+        } else if (!tactic.correct && checked) {
+            // ❌ Selected a distractor
+            item.classList.add("clue-wrong");
+            badge.textContent = i18n.t("badgeWrong");
+            incorrectActions++;
+        } else {
+            // ✅ Correctly skipped a distractor
+            item.classList.add("clue-neutral");
+            badge.textContent = i18n.t("badgeCorrectSkip");
+            correctActions++;
+        }
+
+        item.appendChild(badge);
+    });
+
+    // Scale checklist to always be worth 4 points.
+    // Perfect = all totalItems correct → 4pts. Each wrong action reduces proportionally.
+    const rawScore = Math.max(0, correctActions - incorrectActions);
+    const checklistPoints = Math.round((rawScore / totalItems) * 4);
+    score += checklistPoints;
     updateScoreDisplay();
+
+    // Show clue score summary
+    const totalScore = 1 + checklistPoints; // 1 for phishing ID + checklist bonus
+    const resultDiv  = document.createElement("div");
+    resultDiv.className = "clue-result";
+    resultDiv.innerHTML = i18n.t("clueResultScore")(checklistPoints, totalScore, correctActions, totalItems);
+    cluesDiv.appendChild(resultDiv);
 
     nextBtnEl.style.display = "inline-block";
 }
 
-/**
- * Load next question
- */
+// ─── NEXT QUESTION ────────────────────────────────────────────────────────────
 function nextQuestion() {
     currentEmailIndex++;
-
     if (currentEmailIndex < quizEmails.length) {
         loadEmail();
     } else {
@@ -381,86 +433,78 @@ function nextQuestion() {
     }
 }
 
-/**
- * End the game
- */
+// ─── END GAME ─────────────────────────────────────────────────────────────────
 function endGame() {
-    emailCardEl.style.display = "none";
-    buttonsEl.style.display = "none";
-    nextBtnEl.style.display = "none";
+    emailCardEl.style.display  = "none";
+    buttonsEl.style.display    = "none";
+    nextBtnEl.style.display    = "none";
+    feedbackEl.style.display   = "none";
+    removeExtras();
 
-    const percentage = Math.round((score / quizEmails.length) * 100);
-    let message = "";
+    const percentage = Math.round((score / MAX_SCORE) * 100);
 
-    if (percentage === 100) {
-        message = "🏆 Perfect Score! You're a phishing expert!";
-    } else if (percentage >= 85) {
-        message = "🥇 Excellent! Outstanding phishing detection skills!";
-    } else if (percentage >= 70) {
-        message = "🥈 Very Good! You caught most of the phishing attempts!";
-    } else if (percentage >= 55) {
-        message = "📚 Good Start! Keep practicing to improve your detection skills!";
-    } else if (percentage >= 40) {
-        message = "📖 Keep Learning! Phishing attacks are designed to be deceptive!";
-    } else {
-        message = "💪 Don't Give Up! Practice makes perfect in security awareness!";
-    }
+    let message;
+    if (percentage === 100)     message = i18n.t("endPerfect");
+    else if (percentage >= 80)  message = i18n.t("endExcellent");
+    else if (percentage >= 60)  message = i18n.t("endGood");
+    else if (percentage >= 40)  message = i18n.t("endNotBad");
+    else                        message = i18n.t("endKeepLearning");
 
     finalScoreEl.innerHTML = `
-        ${message}<br><br>
-        Final Score: <strong>${score} / ${quizEmails.length}</strong><br>
-        <span style="font-size: 16px;">${percentage}%</span>
+        <span class="end-message">${message}</span>
+        <div class="end-scores">
+            <div class="end-score-main">${score} <span>/ ${MAX_SCORE}</span></div>
+            <div class="end-score-pct">${percentage}%</div>
+        </div>
+        <p class="end-detail">${i18n.t("endDetail")(QUIZ_LENGTH, MAX_SCORE, percentage)}</p>
     `;
 
     finalScoreContainerEl.style.display = "block";
 }
 
-/**
- * Restart the game
- */
+// ─── RESTART / HOME ───────────────────────────────────────────────────────────
 function restartGame() {
     localStorage.removeItem("playerName");
     localStorage.removeItem("playerScore");
     window.location.href = "index.html";
 }
 
-/**
- * Go back to home/name page
- */
 function goHome() {
-    if (confirm("Are you sure? Your progress will be lost.")) {
+    if (confirm(i18n.t("homeConfirm"))) {
         localStorage.removeItem("playerName");
         localStorage.removeItem("playerScore");
         window.location.href = "index.html";
     }
 }
 
-/**
- * Update score display in top bar
- */
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function showFeedback(msg, type) {
+    feedbackEl.textContent = msg;
+    feedbackEl.className   = `feedback ${type}`;
+}
+
+function removeExtras() {
+    ["phishing-clues", "clue-submit-btn", "clue-score"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    });
+}
+
 function updateScoreDisplay() {
-    scoreDisplayEl.textContent = `Score: ${score} / ${quizEmails.length}`;
+    scoreDisplayEl.textContent = `${i18n.t("scorePrefix")} ${score} / ${MAX_SCORE}`;
 }
 
-/**
- * Update progress bar
- */
 function updateProgressBar() {
-    const percentage = ((currentEmailIndex + 1) / quizEmails.length) * 100;
-    progressFillEl.style.width = percentage + "%";
+    const pct = ((currentEmailIndex + 1) / quizEmails.length) * 100;
+    progressFillEl.style.width = pct + "%";
 }
 
-/**
- * Shuffle array in place (Fisher-Yates)
- */
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
 
-/**
- * Initialize on page load
- */
+// ─── START ────────────────────────────────────────────────────────────────────
 init();

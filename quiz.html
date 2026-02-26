@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing Quiz</title>
+    <title data-i18n="quizTitle">Phishing Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -28,11 +28,16 @@
                     </svg>
                     <div class="logo-text">Con<span>X</span>ion</div>
                 </div>
-                <button onclick="goHome()" class="btn-home">← Home</button>
+                <button onclick="goHome()" class="btn-home" data-i18n="homeBtn">← Home</button>
             </div>
-            <div>
-                <span id="welcome" style="margin-right: 15px; color: var(--text-secondary);"></span>
-                <span id="score-display">Score: 0 / 0</span>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div class="lang-switch active-en" id="lang-switch-quiz">
+                    <div class="lang-thumb"></div>
+                    <span class="lang-opt" data-val="en">EN</span>
+                    <span class="lang-opt" data-val="nl">NL</span>
+                </div>
+                <span id="welcome" style="color: var(--text-secondary);"></span>
+                <span id="score-display" data-i18n="scoreLabel">Score: 0 / 0</span>
             </div>
         </div>
     </div>
@@ -46,36 +51,39 @@
         <div class="email-card glass-panel">
             <div class="email-header">
                 <div class="email-field">
-                    <p class="label">From:</p>
+                    <p class="label" data-i18n="fromLabel">From:</p>
                     <p class="value" id="from"></p>
                 </div>
                 <div class="email-field">
-                    <p class="label">Subject:</p>
+                    <p class="label" data-i18n="subjectLabel">Subject:</p>
                     <p class="value" id="subject"></p>
                 </div>
             </div>
             <div class="email-body" id="body"></div>
         </div>
 
-        <div class="question-text">Is this email real or phishing?</div>
+        <div class="question-text" data-i18n="questionText">Is this email real or phishing?</div>
 
         <div class="buttons">
-            <button onclick="answer('real')" class="btn btn-real">✓ Real Email</button>
-            <button onclick="answer('phishing')" class="btn btn-phishing">⚠ Phishing</button>
+            <button onclick="answer('real')" class="btn btn-real" data-i18n="btnReal">✓ Real Email</button>
+            <button onclick="answer('phishing')" class="btn btn-phishing" data-i18n="btnPhishing">⚠ Phishing</button>
         </div>
 
         <p id="feedback" class="feedback"></p>
-        <button id="next-btn" onclick="nextQuestion()" class="btn btn-primary" style="display:none;">Next
-            Question</button>
+        <button id="next-btn" onclick="nextQuestion()" class="btn btn-primary" style="display:none;"
+            data-i18n="nextQuestion">Next Question</button>
 
         <div id="final-score-container" class="glass-panel" style="display:none;">
             <h2 id="final-score"></h2>
-            <p class="final-message">Thank you for playing the ConXion Phishing Awareness Game.</p>
-            <button id="restart-btn" onclick="restartGame()" class="btn btn-primary">Play Again</button>
+            <p class="final-message" data-i18n="finalMessage">Thank you for playing the ConXion Phishing Awareness Game.
+            </p>
+            <button id="restart-btn" onclick="restartGame()" class="btn btn-primary" data-i18n="playAgain">Play
+                Again</button>
         </div>
 
     </div>
 
+    <script src="i18n.js"></script>
     <script src="quizScript.js"></script>
 </body>
 
