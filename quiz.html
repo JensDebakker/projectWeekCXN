@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <button onclick="goHome()" class="btn-home">← Home</button>
+    <div class="top-bar-content">
+        <span id="welcome"></span>
+        <span id="score-display">Score: 0 / 0</span>
+    </div>
+</div>
+
+<div class="quiz-container">
+
+    <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+    </div>
+
+    <div class="email-card">
+        <div class="email-header">
+            <div class="email-field">
+                <p class="label">From:</p>
+                <p class="value" id="from"></p>
+            </div>
+            <div class="email-field">
+                <p class="label">Subject:</p>
+                <p class="value" id="subject"></p>
+            </div>
+        </div>
+        <div class="email-body" id="body"></div>
+    </div>
+
+    <div class="question-text">Is this email real or phishing?</div>
+
+    <div class="buttons">
+        <button onclick="answer('real')" class="btn btn-real">✓ Real Email</button>
+        <button onclick="answer('phishing')" class="btn btn-phishing">⚠ Phishing</button>
+    </div>
+
+    <p id="feedback" class="feedback"></p>
+    <button id="next-btn" onclick="nextQuestion()" class="btn btn-primary" style="display:none;">Next Question</button>
+
+    <div id="final-score-container" style="display:none;">
+        <h2 id="final-score"></h2>
+        <button id="restart-btn" onclick="restartGame()" class="btn btn-primary">Play Again</button>
+    </div>
+
+</div>
+
+<script src="quizScript.js"></script>
+</body>
+</html>
