@@ -1,11 +1,11 @@
 :root {
-    --primary: #38bdf8;
-    --secondary: #818cf8;
-    --bg-dark: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --border: rgba(255, 255, 255, 0.1);
-    --text: #f8fafc;
-    --muted: #94a3b8;
+    --primary: #0284c7;
+    --secondary: #6366f1;
+    --bg-light: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --border: rgba(0, 0, 0, 0.08);
+    --text: #1e293b;
+    --muted: #64748b;
 }
 
 * {
@@ -16,11 +16,10 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: var(--bg-dark);
+    background: var(--bg-light);
     background-image:
-        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, .15), transparent 30%),
-        radial-gradient(circle at 85% 20%, rgba(129, 140, 248, .15), transparent 30%),
-        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, .08), transparent 30%);
+        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, .08), transparent 30%),
+        radial-gradient(circle at 85% 20%, rgba(129, 140, 248, .08), transparent 30%);
     min-height: 100vh;
     color: var(--text);
     overflow-x: hidden;
@@ -70,7 +69,7 @@ header {
     font-weight: 900;
     margin-top: 32px;
     line-height: 1.15;
-    background: linear-gradient(135deg, #f8fafc 30%, var(--secondary));
+    background: linear-gradient(135deg, #0f172a 30%, var(--secondary));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -123,8 +122,8 @@ header {
 
 .module-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, .45);
-    border-color: rgba(255, 255, 255, .22);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+    border-color: var(--primary);
 }
 
 .module-card:hover::before {
@@ -136,8 +135,9 @@ header {
 }
 
 .module-card.placeholder {
-    opacity: .55;
+    opacity: .65;
     cursor: default;
+    background: rgba(241, 245, 249, 0.5);
 }
 
 .module-card.placeholder:hover {

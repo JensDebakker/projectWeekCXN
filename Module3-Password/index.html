@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Human Firewall: Wachtwoord Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
@@ -24,7 +25,9 @@
             height: 100vh;
         }
 
-        .hacker-font { font-family: 'Fira Code', monospace; }
+        .hacker-font {
+            font-family: 'Fira Code', monospace;
+        }
 
         .choice-card {
             background: rgba(15, 15, 25, 0.8);
@@ -50,8 +53,13 @@
         }
 
         @keyframes scan {
-            0% { top: 0%; }
-            100% { top: 100%; }
+            0% {
+                top: 0%;
+            }
+
+            100% {
+                top: 100%;
+            }
         }
 
         .scanner-line {
@@ -66,14 +74,17 @@
         }
     </style>
 </head>
+
 <body class="flex flex-col h-screen">
     <div class="scanner-line"></div>
 
     <!-- HEADER -->
     <header class="p-6 border-b border-gray-900 flex justify-between items-center bg-black/50 z-20">
         <div>
-            <h1 class="text-2xl font-bold tracking-tighter uppercase text-blue-400">Human Firewall <span class="text-white">Arena</span></h1>
-            <p id="level-indicator" class="text-[10px] hacker-font text-gray-500 uppercase">Sessie: #001 - Strategie Analyse</p>
+            <h1 class="text-2xl font-bold tracking-tighter uppercase text-blue-400">Human Firewall <span
+                    class="text-white">Arena</span></h1>
+            <p id="level-indicator" class="text-[10px] hacker-font text-gray-500 uppercase">Sessie: #001 - Strategie
+                Analyse</p>
         </div>
         <div class="flex space-x-8">
             <div class="text-right">
@@ -88,15 +99,16 @@
     </header>
 
     <main class="flex-1 relative flex flex-col items-center justify-center p-6">
-        
+
         <!-- INTRO SCREEN -->
         <div id="intro-screen" class="text-center max-w-2xl z-20 animate__animated animate__fadeIn">
             <h2 class="text-5xl font-black mb-6 italic">Kies je Verdediging.</h2>
             <p class="text-gray-400 text-lg mb-10 leading-relaxed">
-                Hackers vallen aan met miljarden combinaties per seconde. 
+                Hackers vallen aan met miljarden combinaties per seconde.
                 Slechts één van deze opties houdt ze echt buiten. Weet jij welke?
             </p>
-            <button onclick="startGame()" class="px-12 py-4 bg-blue-600 text-white font-black uppercase tracking-widest hover:bg-blue-400 transition-all rounded-sm shadow-[0_0_20px_rgba(0,212,255,0.3)]">
+            <button onclick="startGame()"
+                class="px-12 py-4 bg-blue-600 text-white font-black uppercase tracking-widest hover:bg-blue-400 transition-all rounded-sm shadow-[0_0_20px_rgba(0,212,255,0.3)]">
                 Start Analyse
             </button>
         </div>
@@ -114,16 +126,18 @@
         </div>
 
         <!-- FEEDBACK OVERLAY -->
-        <div id="feedback-overlay" class="hidden fixed inset-0 z-50 feedback-overlay flex items-center justify-center p-6">
+        <div id="feedback-overlay"
+            class="hidden fixed inset-0 z-50 feedback-overlay flex items-center justify-center p-6">
             <div class="max-w-3xl w-full bg-gray-900 border border-gray-800 p-10 rounded-2xl relative overflow-hidden">
                 <div id="crack-sim" class="absolute top-0 left-0 w-full h-1 bg-gray-800">
                     <div id="crack-bar" class="crack-progress bg-red-500 w-0"></div>
                 </div>
-                
+
                 <div class="text-center mb-8">
                     <div id="feedback-icon" class="text-6xl mb-4"></div>
                     <h4 id="feedback-title" class="text-4xl font-black mb-2 italic"></h4>
-                    <div id="crack-time-display" class="hacker-font text-sm text-red-400 uppercase font-bold mb-4"></div>
+                    <div id="crack-time-display" class="hacker-font text-sm text-red-400 uppercase font-bold mb-4">
+                    </div>
                 </div>
 
                 <div class="space-y-6 text-center">
@@ -132,7 +146,8 @@
                         <span class="text-blue-400 font-bold uppercase text-xs block mb-2">Waarom?</span>
                         <p id="feedback-why" class="text-blue-100 text-sm"></p>
                     </div>
-                    <button id="next-btn" onclick="nextLevel()" class="w-full py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-blue-400 transition-all">
+                    <button id="next-btn" onclick="nextLevel()"
+                        class="w-full py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-blue-400 transition-all">
                         Volgende Analyse
                     </button>
                 </div>
@@ -143,12 +158,15 @@
         <div id="end-screen" class="hidden text-center z-20">
             <h2 id="end-title" class="text-7xl font-black mb-4 italic">SYSTEM SECURED</h2>
             <p id="end-stats" class="text-blue-400 hacker-font mb-10"></p>
-            <button onclick="location.reload()" class="px-10 py-4 border border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-all">Herstart Protocol</button>
+            <button onclick="location.reload()"
+                class="px-10 py-4 border border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-all">Herstart
+                Protocol</button>
         </div>
 
     </main>
 
-    <footer class="p-4 border-t border-gray-900 flex justify-between text-[10px] hacker-font text-gray-600 uppercase tracking-widest z-20">
+    <footer
+        class="p-4 border-t border-gray-900 flex justify-between text-[10px] hacker-font text-gray-600 uppercase tracking-widest z-20">
         <div>Status: <span class="text-green-500 animate-pulse">Scanning...</span></div>
         <div>Human Firewall v5.0 // Antwerpen HQ</div>
     </footer>
@@ -203,17 +221,17 @@
             const data = scenarios[level];
             document.getElementById('scenario-title').innerText = data.title;
             document.getElementById('scenario-desc').innerText = data.desc;
-            
+
             const grid = document.getElementById('choices-grid');
             grid.innerHTML = '';
-            
+
             data.options.forEach((opt, idx) => {
                 const card = document.createElement('div');
                 card.className = 'choice-card p-8 rounded-xl animate__animated animate__fadeInUp';
                 card.style.animationDelay = `${idx * 0.1}s`;
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-4">
-                        <span class="text-[10px] hacker-font text-blue-500 uppercase">Optie 0${idx+1}</span>
+                        <span class="text-[10px] hacker-font text-blue-500 uppercase">Optie 0${idx + 1}</span>
                         <span class="text-[10px] hacker-font text-gray-600 uppercase">Type: ${opt.strength}</span>
                     </div>
                     <div class="text-2xl font-bold mb-2 text-white">${opt.t}</div>
@@ -230,17 +248,17 @@
             const overlay = document.getElementById('feedback-overlay');
             const crackBar = document.getElementById('crack-bar');
             const timeDisplay = document.getElementById('crack-time-display');
-            
+
             overlay.classList.remove('hidden');
             document.getElementById('feedback-title').innerText = opt.correct ? "VEILIGE KEUZE" : "SYSTEEM BREUK";
             document.getElementById('feedback-icon').innerText = opt.correct ? "🛡️" : "💥";
             document.getElementById('feedback-text').innerText = opt.correct ? "Je hebt de aanval succesvol afgeslagen." : "De hacker is door je verdediging heen.";
             document.getElementById('feedback-why').innerText = opt.why;
-            
+
             // Simuleer kraken
             crackBar.style.width = '0%';
             crackBar.className = opt.correct ? 'crack-progress bg-green-500' : 'crack-progress bg-red-500';
-            
+
             let p = 0;
             const speed = opt.correct ? 100 : 5; // Snellere balk bij fout = sneller gekraakt
             const interval = setInterval(() => {
@@ -260,7 +278,7 @@
                 document.getElementById('feedback-title').className = "text-4xl font-black mb-2 italic text-red-500";
                 updateUI();
             }
-            
+
             document.getElementById('score-display').innerText = score.toString().padStart(4, '0');
         }
 
@@ -272,7 +290,7 @@
         function nextLevel() {
             document.getElementById('feedback-overlay').classList.add('hidden');
             level++;
-            
+
             if (level < scenarios.length && health > 0) {
                 loadLevel();
             } else {
@@ -284,7 +302,7 @@
             document.getElementById('game-screen').classList.add('hidden');
             const end = document.getElementById('end-screen');
             end.classList.remove('hidden');
-            
+
             if (health <= 0) {
                 document.getElementById('end-title').innerText = "SYSTEM COMPROMISED";
                 document.getElementById('end-title').classList.add('text-red-500');
@@ -292,7 +310,7 @@
                 document.getElementById('end-title').innerText = "HUMAN FIREWALL ACTIVE";
                 document.getElementById('end-title').classList.add('text-green-400');
             }
-            
+
             document.getElementById('end-stats').innerText = `FINALE SCORE: ${score} // OVERGEBLEVEN LEVENS: ${health}`;
         }
 
@@ -307,5 +325,7 @@
         }, 4000);
 
     </script>
+    <script src="../nav.js"></script>
 </body>
+
 </html>

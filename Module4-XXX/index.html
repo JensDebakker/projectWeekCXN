@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,10 +29,10 @@
             border-bottom: 1px dashed transparent;
         }
 
-            .osint-clickable:hover {
-                background-color: rgba(34, 211, 238, 0.1);
-                border-bottom: 1px dashed #22d3ee;
-            }
+        .osint-clickable:hover {
+            background-color: rgba(34, 211, 238, 0.1);
+            border-bottom: 1px dashed #22d3ee;
+        }
 
         .highlight-found {
             background-color: #ef4444 !important;
@@ -95,6 +96,7 @@
         }
     </style>
 </head>
+
 <body class="min-h-screen p-4 md:p-8">
 
     <div id="app" class="max-w-6xl mx-auto">
@@ -109,7 +111,8 @@
                     <span class="text-xs text-slate-400 block uppercase">Data Verzamelpunt</span>
                     <span id="score-count" class="text-xl font-bold text-cyan-400">0 / 0</span>
                 </div>
-                <button onclick="toggleFacilitator()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-2 rounded border border-slate-600 transition-all">
+                <button onclick="toggleFacilitator()"
+                    class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-2 rounded border border-slate-600 transition-all">
                     <i class="fas fa-eye mr-2"></i> Facilitator Modus
                 </button>
             </div>
@@ -206,7 +209,7 @@
 
         // Bereken totaal aantal risico's
         SOCIAL_POSTS.forEach(p => {
-            p.content.forEach(c => { if(c.risk) totalRisks++; });
+            p.content.forEach(c => { if (c.risk) totalRisks++; });
         });
 
         // --- CORE FUNCTIONS ---
@@ -340,7 +343,7 @@
 
         function showToast(msg) {
             const oldToast = document.querySelector('.toast-msg');
-            if(oldToast) oldToast.remove();
+            if (oldToast) oldToast.remove();
 
             const toast = document.createElement('div');
             toast.className = 'toast-msg fixed bottom-10 left-1/2 -translate-x-1/2 bg-cyan-600 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm font-bold flex items-center gap-3 animate-bounce';
@@ -422,9 +425,9 @@
         ];
 
         function renderStep(num) {
-            const step = steps[num-1];
+            const step = steps[num - 1];
             const container = document.getElementById('step-container');
-            if(!container) return;
+            if (!container) return;
 
             container.innerHTML = `
                 <div class="animate-fade-in">
@@ -441,11 +444,11 @@
         }
 
         function pickOption(field, optIdx, stepNum) {
-            const val = steps[stepNum-1].options[optIdx].val;
+            const val = steps[stepNum - 1].options[optIdx].val;
             phishingMail[field] = val;
 
             const view = document.getElementById(`view-${field}`);
-            if(view) {
+            if (view) {
                 view.innerText = val;
                 view.classList.remove('italic', 'text-slate-500');
             }
@@ -560,5 +563,7 @@
         // Initial Boot
         window.onload = updateUI;
     </script>
+    <script src="../nav.js"></script>
 </body>
+
 </html>

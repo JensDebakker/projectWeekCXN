@@ -23,13 +23,16 @@
     const moduleMatch = urlPath.match(/Module(\d+)-/i);
     const currentId = moduleMatch ? parseInt(moduleMatch[1], 10) : null;
 
-    // ── Root path relative to the current page (go up one directory) ───────
+    // ── Root path relative to the current page (go up one directory if in module) ──
+    const isModule = currentId !== null;
+    const rootPath = isModule ? "../" : "./";
+
     function rootHref(relPath) {
-        return "../" + relPath;
+        return rootPath + relPath;
     }
 
     // ── Build the nav HTML ─────────────────────────────────────────────────
-    const homeHref = "../index.html";
+    const homeHref = rootPath + "index.html";
 
     const moduleLinks = MODULES.map(m => {
         const isCurrent = m.id === currentId;
@@ -47,15 +50,7 @@
 
                 <!-- Logo / Home -->
                 <a href="${homeHref}" class="cxn-nav-logo" title="Back to main menu">
-                    <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
-                        <rect width="100" height="100" rx="22" fill="url(#cxnG)" fill-opacity=".18"/>
-                        <path d="M28 28L72 72M72 28L28 72" stroke="url(#cxnG)" stroke-width="13" stroke-linecap="round"/>
-                        <defs>
-                            <linearGradient id="cxnG" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#38bdf8"/><stop offset="1" stop-color="#818cf8"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                    <img src="${rootPath}vives.png" alt="VIVES" style="height: 28px; width: auto;">
                     <span class="cxn-nav-logo-text">Con<span>X</span>ion</span>
                 </a>
 
@@ -85,10 +80,10 @@
             left: 0;
             right: 0;
             z-index: 9999;
-            background: rgba(10, 17, 35, 0.88);
+            background: rgba(243, 244, 246, 0.95);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255,255,255,.09);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             height: 52px;
         }
 
@@ -115,7 +110,7 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
             font-size: 16px;
             font-weight: 800;
-            color: #f8fafc;
+            color: #1e293b;
             letter-spacing: -0.4px;
         }
 
@@ -144,7 +139,7 @@
             padding: 5px 12px;
             border-radius: 8px;
             text-decoration: none;
-            color: #94a3b8;
+            color: #475569;
             font-family: 'Inter', 'Segoe UI', sans-serif;
             font-size: 13px;
             font-weight: 500;
@@ -153,13 +148,13 @@
         }
 
         .cxn-nav-link:hover {
-            background: rgba(255,255,255,.07);
-            color: #f8fafc;
+            background: rgba(0, 0, 0, 0.05);
+            color: #0f172a;
         }
 
         .cxn-nav-link--active {
-            background: rgba(56,189,248,.12);
-            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            color: #0284c7;
             font-weight: 600;
         }
 
@@ -175,19 +170,19 @@
             padding: 5px 12px;
             border-radius: 8px;
             text-decoration: none;
-            color: #94a3b8;
+            color: #475569;
             font-family: 'Inter', 'Segoe UI', sans-serif;
             font-size: 13px;
             font-weight: 500;
-            border: 1px solid rgba(255,255,255,.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             transition: background .2s, color .2s, border-color .2s;
             white-space: nowrap;
         }
 
         .cxn-nav-home:hover {
-            background: rgba(255,255,255,.08);
-            color: #f8fafc;
-            border-color: rgba(255,255,255,.22);
+            background: rgba(0, 0, 0, 0.04);
+            color: #0f172a;
+            border-color: rgba(0, 0, 0, 0.2);
         }
 
         /* On small screens hide the module numbers to save space */
