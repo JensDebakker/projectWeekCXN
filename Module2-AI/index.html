@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Real or AI?</title>
-        <link rel="stylesheet" href="css\style.css">
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Real or AI?</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header></header> <!-- Placeholder or nav will be injected here -->
+
+    <div class="container">
         <h1>Real Or AI?</h1>
-        <div class="container">
-            <div class="box">
-                <video width="640" height="360" controls id="vid1Left" src="C:\Users\Jenso\Videos\2022-02-14 19-06-44.mkv"></video>
-                <video width="640" height="360" controls id="vid2Left" src="vid\Thingamabob.mp4" class="hidden"></video>
-                <video width="640" height="360" controls id="vid3Left" src="vid\Ragequit.mp4" class="hidden"></video>
-                <video width="640" height="360" controls id="vid4Left" src="vid\YouMissedAnItem.mp4" class="hidden"></video>
-                <video width="640" height="360" controls id="vid5Left" src="vid\DeliciousDinner.mp4" class="hidden"></video>
-                <video width="640" height="360" controls id="vid6Left" src="vid\FlashbangingJamie.mp4" class="hidden"></video>
-                <video width="640" height="360" controls id="vid7Left" src="vid\PinThroughJamiesFace.mp4" class="hidden"></video>
-                <button id="vidLeftSubmit">AI</button>
-            </div>
-            <div class="box">
-                <video src="C:\Users\Jenso\Videos\2022-02-14 19-03-01.mkv" width="640" height="360" controls id="vid1Right"></video>
-                <video src="vid\TransmitThisCat.mp4" width="640" height="360" controls id="vid2Right" class="hidden"></video>
-                <video src="vid\golf.mp4" width="640" height="360" controls id="vid3Right" class="hidden"></video>
-                <video src="vid\AttackOfTheChild.mp4" width="640" height="360" controls id="vid4Right" class="hidden"></video>
-                <video src="vid\JamieGetsSpun.mp4" width="640" height="360" controls id="vid5Right" class="hidden"></video>
-                <video src="vid\Spooky_Ghost.mov" width="640" height="360" controls id="vid6Right" class="hidden"></video>
-                <video src="vid\Yoink.mp4" width="640" height="360" controls id="vid7Right" class="hidden"></video>
-                <button id="vidRightSubmit">AI</button>
-            </div>
+        <div class="box">
+            <video width="640" height="360" controls id="vid1Left" src="vid/2022-02-14 19-06-44.mp4"></video>
+            <video width="640" height="360" controls id="vid2Left" src="vid/Thingamabob.mp4" class="hidden"></video>
+            <video width="640" height="360" controls id="vid3Left" src="vid/Ragequit.mp4" class="hidden"></video>
+            <video width="640" height="360" controls id="vid4Left" src="vid/YouMissedAnItem.mp4" class="hidden"></video>
+            <video width="640" height="360" controls id="vid5Left" src="vid/DeliciousDinner.mp4" class="hidden"></video>
+            <video width="640" height="360" controls id="vid6Left" src="vid/FlashbangingJamie.mp4"
+                class="hidden"></video>
+            <video width="640" height="360" controls id="vid7Left" src="vid/PinThroughJamiesFace.mp4"
+                class="hidden"></video>
+            <button id="vidLeftSubmit">AI</button>
         </div>
-        <p id="answerStatus"></p>
-        <h2 class="hidden" id="result"></h2>
-    </body>
-    <script src="js\code.js"></script>
+        <div class="box">
+            <video src="vid/2022-02-14 19-03-01.mp4" width="640" height="360" controls id="vid1Right"></video>
+            <video src="vid/TransmitThisCat.mp4" width="640" height="360" controls id="vid2Right"
+                class="hidden"></video>
+            <video src="vid/golf.mp4" width="640" height="360" controls id="vid3Right" class="hidden"></video>
+            <video src="vid/AttackOfTheChild.mp4" width="640" height="360" controls id="vid4Right"
+                class="hidden"></video>
+            <video src="vid/JamieGetsSpun.mp4" width="640" height="360" controls id="vid5Right" class="hidden"></video>
+            <video src="vid/Spooky_Ghost.mov" width="640" height="360" controls id="vid6Right" class="hidden"></video>
+            <video src="vid/Yoink.mp4" width="640" height="360" controls id="vid7Right" class="hidden"></video>
+            <button id="vidRightSubmit">AI</button>
+        </div>
+    </div>
+    <p id="answerStatus"></p>
+    <h2 class="hidden" id="result"></h2>
+
+    <script src="../nav.js"></script>
+    <script src="js/code.js"></script>
+</body>
+
 </html>
