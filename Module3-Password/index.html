@@ -1,13 +1,311 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conxion Cipher Siege</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Firewall: Wachtwoord Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-red: #ff0055;
+            --neon-green: #00ff9f;
+            --bg-dark: #050505;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .hacker-font { font-family: 'Fira Code', monospace; }
+
+        .choice-card {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid #1a1a2e;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .choice-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .crack-progress {
+            height: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .feedback-overlay {
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .scanner-line {
+            height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+            animation: scan 3s linear infinite;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+    <div class="scanner-line"></div>
+
+    <!-- HEADER -->
+    <header class="p-6 border-b border-gray-900 flex justify-between items-center bg-black/50 z-20">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tighter uppercase text-blue-400">Human Firewall <span class="text-white">Arena</span></h1>
+            <p id="level-indicator" class="text-[10px] hacker-font text-gray-500 uppercase">Sessie: #001 - Strategie Analyse</p>
+        </div>
+        <div class="flex space-x-8">
+            <div class="text-right">
+                <div class="text-[10px] text-gray-500 uppercase">Punten</div>
+                <div id="score-display" class="text-2xl font-black text-white">0000</div>
+            </div>
+            <div class="text-right">
+                <div class="text-[10px] text-gray-500 uppercase">Levens</div>
+                <div id="health-display" class="text-2xl font-black text-red-500">❤❤❤</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 relative flex flex-col items-center justify-center p-6">
+        
+        <!-- INTRO SCREEN -->
+        <div id="intro-screen" class="text-center max-w-2xl z-20 animate__animated animate__fadeIn">
+            <h2 class="text-5xl font-black mb-6 italic">Kies je Verdediging.</h2>
+            <p class="text-gray-400 text-lg mb-10 leading-relaxed">
+                Hackers vallen aan met miljarden combinaties per seconde. 
+                Slechts één van deze opties houdt ze echt buiten. Weet jij welke?
+            </p>
+            <button onclick="startGame()" class="px-12 py-4 bg-blue-600 text-white font-black uppercase tracking-widest hover:bg-blue-400 transition-all rounded-sm shadow-[0_0_20px_rgba(0,212,255,0.3)]">
+                Start Analyse
+            </button>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="hidden w-full max-w-5xl z-20 flex flex-col">
+            <div class="text-center mb-12">
+                <h3 id="scenario-title" class="text-3xl font-bold mb-2 uppercase tracking-tight"></h3>
+                <p id="scenario-desc" class="text-gray-400 text-lg"></p>
+            </div>
+
+            <div id="choices-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Wordt gevuld door JS -->
+            </div>
+        </div>
+
+        <!-- FEEDBACK OVERLAY -->
+        <div id="feedback-overlay" class="hidden fixed inset-0 z-50 feedback-overlay flex items-center justify-center p-6">
+            <div class="max-w-3xl w-full bg-gray-900 border border-gray-800 p-10 rounded-2xl relative overflow-hidden">
+                <div id="crack-sim" class="absolute top-0 left-0 w-full h-1 bg-gray-800">
+                    <div id="crack-bar" class="crack-progress bg-red-500 w-0"></div>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <div id="feedback-icon" class="text-6xl mb-4"></div>
+                    <h4 id="feedback-title" class="text-4xl font-black mb-2 italic"></h4>
+                    <div id="crack-time-display" class="hacker-font text-sm text-red-400 uppercase font-bold mb-4"></div>
+                </div>
+
+                <div class="space-y-6 text-center">
+                    <div id="feedback-text" class="text-xl text-gray-300 leading-relaxed"></div>
+                    <div class="bg-blue-500/10 p-6 rounded-xl border border-blue-500/20 text-left">
+                        <span class="text-blue-400 font-bold uppercase text-xs block mb-2">Waarom?</span>
+                        <p id="feedback-why" class="text-blue-100 text-sm"></p>
+                    </div>
+                    <button id="next-btn" onclick="nextLevel()" class="w-full py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-blue-400 transition-all">
+                        Volgende Analyse
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="end-screen" class="hidden text-center z-20">
+            <h2 id="end-title" class="text-7xl font-black mb-4 italic">SYSTEM SECURED</h2>
+            <p id="end-stats" class="text-blue-400 hacker-font mb-10"></p>
+            <button onclick="location.reload()" class="px-10 py-4 border border-white text-white font-bold uppercase hover:bg-white hover:text-black transition-all">Herstart Protocol</button>
+        </div>
+
+    </main>
+
+    <footer class="p-4 border-t border-gray-900 flex justify-between text-[10px] hacker-font text-gray-600 uppercase tracking-widest z-20">
+        <div>Status: <span class="text-green-500 animate-pulse">Scanning...</span></div>
+        <div>Human Firewall v5.0 // Antwerpen HQ</div>
+    </footer>
+
+    <script>
+        const scenarios = [
+            {
+                title: "De Lengte-Oorlog",
+                desc: "Welk wachtwoord is het lastigst te kraken voor een computer?",
+                options: [
+                    { t: "P@ssw0rd!", strength: "zwak", time: "1 seconde", correct: false, why: "Complexiteit (leestekens) helpt niet als het wachtwoord kort is. Hackers raden dit binnen een oogwenk." },
+                    { t: "appel boom fiets zon", strength: "onbreekbaar", time: "2000+ jaar", correct: true, why: "Dit is een 'passphrase'. De enorme lengte maakt het aantal combinaties astronomisch groot, zelfs zonder gekke tekens." }
+                ]
+            },
+            {
+                title: "Het Post-it Gevaar",
+                desc: "Je moet 20 verschillende wachtwoorden onthouden. Wat is de veiligste methode?",
+                options: [
+                    { t: "Eén sterk wachtwoord overal gebruiken", strength: "gevaarlijk", time: "Direct (bij 1 lek)", correct: false, why: "Als één site lekt (bijv. een webshop), heeft de hacker direct toegang tot je bank, mail en werk." },
+                    { t: "Een digitale Wachtwoordmanager", strength: "militair", time: "Onkraakbaar", correct: true, why: "Een manager genereert unieke, lange codes voor elke site. Je hoeft er zelf maar één (hele sterke) te onthouden." }
+                ]
+            },
+            {
+                title: "De MFA Barrière",
+                desc: "Een hacker heeft je wachtwoord geraden. Wat houdt hem nu nog tegen?",
+                options: [
+                    { t: "Een complexere beveiligingsvraag", strength: "zwak", time: "Minuten", correct: false, why: "Antwoorden op vragen als 'Je eerste huisdier' zijn vaak simpel te vinden via social media (Social Engineering)." },
+                    { t: "Multi-Factor Authenticatie (App)", strength: "ondoordringbaar", time: "Nooit", correct: true, why: "Zelfs met je wachtwoord komt de hacker niet binnen zonder de unieke code op jouw fysieke telefoon." }
+                ]
+            },
+            {
+                title: "Social Engineering",
+                desc: "Je krijgt een mail van 'De CEO' met de vraag om je inloggegevens voor een 'spoed audit'.",
+                options: [
+                    { t: "Direct antwoorden (hij is de baas)", strength: "kritiek", time: "0 seconden", correct: false, why: "Echte beheerders of directieleden zullen NOOIT om je wachtwoord vragen via mail. Dit is phishing." },
+                    { t: "Melden via het officiële security-kanaal", strength: "slim", time: "Geblokkeerd", correct: true, why: "Door te verifiëren via een ander kanaal (telefoon of interne chat) voorkom je dat je in een vervalst bericht trapt." }
+                ]
+            }
+        ];
+
+        let level = 0;
+        let score = 0;
+        let health = 3;
+
+        function startGame() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            loadLevel();
+        }
+
+        function loadLevel() {
+            const data = scenarios[level];
+            document.getElementById('scenario-title').innerText = data.title;
+            document.getElementById('scenario-desc').innerText = data.desc;
+            
+            const grid = document.getElementById('choices-grid');
+            grid.innerHTML = '';
+            
+            data.options.forEach((opt, idx) => {
+                const card = document.createElement('div');
+                card.className = 'choice-card p-8 rounded-xl animate__animated animate__fadeInUp';
+                card.style.animationDelay = `${idx * 0.1}s`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] hacker-font text-blue-500 uppercase">Optie 0${idx+1}</span>
+                        <span class="text-[10px] hacker-font text-gray-600 uppercase">Type: ${opt.strength}</span>
+                    </div>
+                    <div class="text-2xl font-bold mb-2 text-white">${opt.t}</div>
+                    <div class="w-full bg-gray-900 h-1 mt-4">
+                        <div class="h-full bg-blue-500/20 w-full"></div>
+                    </div>
+                `;
+                card.onclick = () => selectOption(opt);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectOption(opt) {
+            const overlay = document.getElementById('feedback-overlay');
+            const crackBar = document.getElementById('crack-bar');
+            const timeDisplay = document.getElementById('crack-time-display');
+            
+            overlay.classList.remove('hidden');
+            document.getElementById('feedback-title').innerText = opt.correct ? "VEILIGE KEUZE" : "SYSTEEM BREUK";
+            document.getElementById('feedback-icon').innerText = opt.correct ? "🛡️" : "💥";
+            document.getElementById('feedback-text').innerText = opt.correct ? "Je hebt de aanval succesvol afgeslagen." : "De hacker is door je verdediging heen.";
+            document.getElementById('feedback-why').innerText = opt.why;
+            
+            // Simuleer kraken
+            crackBar.style.width = '0%';
+            crackBar.className = opt.correct ? 'crack-progress bg-green-500' : 'crack-progress bg-red-500';
+            
+            let p = 0;
+            const speed = opt.correct ? 100 : 5; // Snellere balk bij fout = sneller gekraakt
+            const interval = setInterval(() => {
+                p += 2;
+                crackBar.style.width = p + '%';
+                timeDisplay.innerText = `KRAAKTIJD ANALYSE: ${opt.time}`;
+                if (p >= 100) {
+                    clearInterval(interval);
+                }
+            }, speed);
+
+            if (opt.correct) {
+                score += 250;
+                document.getElementById('feedback-title').className = "text-4xl font-black mb-2 italic text-green-400";
+            } else {
+                health--;
+                document.getElementById('feedback-title').className = "text-4xl font-black mb-2 italic text-red-500";
+                updateUI();
+            }
+            
+            document.getElementById('score-display').innerText = score.toString().padStart(4, '0');
+        }
+
+        function updateUI() {
+            const h = document.getElementById('health-display');
+            h.innerText = '❤'.repeat(health) + '🖤'.repeat(3 - health);
+        }
+
+        function nextLevel() {
+            document.getElementById('feedback-overlay').classList.add('hidden');
+            level++;
+            
+            if (level < scenarios.length && health > 0) {
+                loadLevel();
+            } else {
+                showEnd();
+            }
+        }
+
+        function showEnd() {
+            document.getElementById('game-screen').classList.add('hidden');
+            const end = document.getElementById('end-screen');
+            end.classList.remove('hidden');
+            
+            if (health <= 0) {
+                document.getElementById('end-title').innerText = "SYSTEM COMPROMISED";
+                document.getElementById('end-title').classList.add('text-red-500');
+            } else {
+                document.getElementById('end-title').innerText = "HUMAN FIREWALL ACTIVE";
+                document.getElementById('end-title').classList.add('text-green-400');
+            }
+            
+            document.getElementById('end-stats').innerText = `FINALE SCORE: ${score} // OVERGEBLEVEN LEVENS: ${health}`;
+        }
+
+        // Simuleer wat hacker activiteit op de achtergrond
+        setInterval(() => {
+            if (level < scenarios.length) {
+                const levelInd = document.getElementById('level-indicator');
+                const codes = ['A-99', 'X-01', 'B-12', 'F-44'];
+                const code = codes[Math.floor(Math.random() * codes.length)];
+                levelInd.innerText = `Sessie: #${code} - Strategie Analyse [Lvl ${level + 1}]`;
+            }
+        }, 4000);
+
+    </script>
+</body>
+</html>
