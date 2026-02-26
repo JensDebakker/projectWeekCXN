@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conxion - Find The Red Flag</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300;500&display=swap');
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-red: #ff003c;
+            --neon-yellow: #f1c40f;
+            --bg-dark: #050a14;
+            --conxion-blue: #0055ff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e0e6ed;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1, h2, h3, .font-tech {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cyber-card {
+            background: rgba(16, 23, 41, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .btn-cyber {
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 12px 24px;
+            background: transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn-cyber:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .log-box {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+        }
+
+        .red-flag-alert {
+            color: var(--neon-red);
+            text-shadow: 0 0 5px var(--neon-red);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+        .hidden { display: none !important; }
+        
+        .result-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#050a14] p-6">
+        <div class="max-w-md w-full cyber-card p-8 rounded-lg text-center border-2 border-blue-500">
+            <div class="text-blue-500 mb-4 font-tech tracking-widest">CONXION SECURITY LABS</div>
+            <h1 class="text-3xl text-white mb-6">FIND THE <span class="text-cyan-400">RED FLAG</span></h1>
+            <p class="text-gray-400 text-sm mb-8">Analyseer 7 willekeurige scenario's. Identificeer interne dreigingen en leer best-practices.</p>
+            
+            <div class="mb-6 text-left">
+                <label class="block text-xs text-blue-400 mb-2 uppercase tracking-tighter">Naam Medewerker:</label>
+                <input type="text" id="username" placeholder="Typ je naam..." class="w-full bg-black/50 border border-blue-500/50 p-3 text-white focus:border-cyan-400 outline-none transition-all">
+            </div>
+            
+            <button onclick="startGame()" class="btn-cyber w-full">START MISSIE</button>
+        </div>
+    </div>
+
+    <!-- Main Game UI -->
+    <div id="game-ui" class="hidden p-4 md:p-8 animate__animated animate__fadeIn">
+        <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-blue-900 pb-6">
+            <div>
+                <div class="text-blue-400 text-sm mb-2 font-tech">CONXION // INSIDER THREAT MONITOR</div>
+                <h1 class="text-4xl font-bold text-white">AGENT: <span id="display-name" class="text-cyan-400 text-2xl uppercase"></span></h1>
+            </div>
+            <div class="text-right">
+                <div class="text-[10px] text-blue-500 tracking-widest">SYSTEM STATUS: <span class="text-green-500">ACTIVE</span></div>
+                <div class="flex gap-4 mt-2">
+                    <div class="bg-blue-900/20 p-2 border border-blue-500/30 rounded min-w-[100px]">
+                        <div class="text-[9px] text-blue-400 uppercase">Voortgang</div>
+                        <div class="text-xl font-tech text-white"><span id="case-counter">1</span> / 7</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main id="case-container" class="max-w-4xl mx-auto">
+            <!-- Cases will be injected here via JS -->
+        </main>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="cyber-card w-full max-w-2xl p-8 rounded-xl animate__animated animate__zoomIn border-t-4 border-blue-500">
+            <div id="modal-indicator" class="text-xs font-tech mb-2">ANALYSE RESULTAAT</div>
+            <h2 id="modal-title" class="text-2xl font-tech mb-4 text-white"></h2>
+            <div id="modal-feedback" class="text-gray-300 mb-6 leading-relaxed"></div>
+            
+            <div class="bg-slate-800/50 p-4 border border-slate-700 rounded mb-6">
+                <div class="text-xs text-blue-400 mb-1 uppercase">Best Practice:</div>
+                <div id="modal-best-practice" class="text-sm italic text-white"></div>
+            </div>
+
+            <button onclick="nextCase()" class="btn-cyber w-full">BEVESTIG & DOORGAAN</button>
+        </div>
+    </div>
+
+    <!-- Final Analysis Screen -->
+    <div id="analysis-screen" class="fixed inset-0 z-[100] hidden bg-[#050a14] p-6 overflow-y-auto">
+        <div class="max-w-4xl mx-auto py-10">
+            <div class="cyber-card p-10 rounded-lg border-2 border-cyan-400">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <h1 class="text-3xl font-tech text-white">DREIGINGS-ANALYSE RAPPORT</h1>
+                        <p class="text-blue-400">Gegenereerd voor: <span id="final-name" class="uppercase"></span></p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-4xl font-tech text-cyan-400" id="final-score">0%</div>
+                        <div class="text-[10px] text-gray-500">SCORE ACCURACY</div>
+                    </div>
+                </div>
+
+                <div id="analysis-results" class="space-y-6 mb-10">
+                    <!-- Results injected here -->
+                </div>
+
+                <div class="bg-blue-900/20 p-6 border-l-4 border-blue-500 mb-8">
+                    <h3 class="font-tech text-white mb-2">Conclusie Conxion</h3>
+                    <p id="final-conclusion" class="text-sm text-gray-300"></p>
+                </div>
+
+                <button onclick="location.reload()" class="btn-cyber">HERSTART SIMULATIE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = "";
+        let currentCaseIndex = 0;
+        let userChoices = [];
+        let activeQuestions = [];
+
+        const questionPool = [
+            {
+                id: "case1",
+                name: "Marc V.",
+                role: "Senior Sales Consultant",
+                context: "Heeft zijn ontslag ingediend en vertrekt over 2 weken.",
+                logs: ["[09:12] Login Success", "[23:50] Bulk Download (CRM_Leads_Full.csv)", "[23:55] SMTP: To personal.marc@gmail.com", "Opgemerkt: Marc is erg ontwijkend over zijn nieuwe werkgever."],
+                correct: "danger",
+                title: "De Nachtbraker",
+                feedback: "Kritieke Red Flag. Bulkdownloads van klantdata buiten werktijd door een vertrekkende medewerker is een klassiek teken van diefstal van intellectueel eigendom.",
+                bestPractice: "Beperk toegangsrechten direct zodra ontslag is ingediend. Monitor data-export van vertrekkend personeel nauwgezet."
+            },
+            {
+                id: "case2",
+                name: "Sophie de J.",
+                role: "Junior Developer",
+                context: "Werkt vaak in publieke ruimtes zoals de bedrijfskantine.",
+                logs: ["Gezien: Sophie laat haar laptop openstaan terwijl ze 15 minuten gaat lunchen.", "[12:15] Onbekende USB-stick gedetecteerd in laptop (Sophie was niet aanwezig).", "Post-it op monitor: 'Welkom2024!'"],
+                correct: "sloppy",
+                title: "De Open Deur",
+                feedback: "Sophie is niet kwaadwillend, maar haar slordigheid creëert enorme kansen voor fysieke infiltranten (tailgaters).",
+                bestPractice: "Lock je scherm (Win+L) ALTIJD als je opstaat, zelfs voor 10 seconden. Gebruik nooit gevonden USB-sticks."
+            },
+            {
+                id: "case3",
+                name: "Ahmed K.",
+                role: "HR Medewerker",
+                context: "Beheert gevoelige personeelsinformatie.",
+                logs: ["[08:55] MFA Challenge: SUCCESS", "[09:30] Geautoriseerde toegang tot salarissysteem", "[12:00] Systeem vergrendeld", "[17:15] Uitgelogd."],
+                correct: "normal",
+                title: "De Professionele Agent",
+                feedback: "Ahmed volgt alle veiligheidsprotocollen. Geen enkele reden tot zorg.",
+                bestPractice: "Blijf consequent MFA gebruiken en rapporteer verdachte mails aan de IT-servicedesk."
+            },
+            {
+                id: "case4",
+                name: "Linda M.",
+                role: "Marketing Specialist",
+                context: "Kreeg kritiek tijdens haar laatste functioneringsgesprek.",
+                logs: ["Gezien: Linda probeert de serverruimte binnen te komen met de badge van een collega.", "Opgemerkt: Linda spreekt de laatste tijd erg negatief over de directie in de koffiehoek.", "[19:00] Login op systeem waar ze geen toegang toe zou moeten hebben."],
+                correct: "danger",
+                title: "De Wraakzuchtige Insider",
+                feedback: "Dit is een gedragsmatige rode vlag. Wraakgevoelens na een slechte beoordeling kunnen leiden tot sabotage of datalekken.",
+                bestPractice: "Insider threats zijn vaak mensen met 'grievances'. HR en IT moeten samenwerken bij veranderingen in werksfeer of prestaties."
+            },
+            {
+                id: "case5",
+                name: "Tom S.",
+                role: "IT Administrator",
+                context: "Heeft volledige admin-rechten.",
+                logs: ["[02:00] Tom logt in op de domain controller", "[02:10] Creatie van een nieuw verborgen admin-account 'support_backup'", "Geen gepland onderhoud geregistreerd in de kalender."],
+                correct: "danger",
+                title: "De Onzichtbare Admin",
+                feedback: "Zeer gevaarlijk. Een beheerder die 'backdoors' creëert buiten werktijd zonder ticket is een enorme dreiging voor de hele infrastructuur.",
+                bestPractice: "Pas het 'Vier-Ogen-Principe' toe bij kritieke wijzigingen. Gebruik Privileged Access Management (PAM)."
+            },
+            {
+                id: "case6",
+                name: "Elena R.",
+                role: "Receptioniste",
+                context: "Eerste aanspreekpunt voor bezoekers.",
+                logs: ["Een 'monteur' vraagt Elena om even een USB-stick in te pluggen om een factuur te printen.", "Elena weigert en vraagt om identificatie.", "Monteur vertrekt gehaast zonder factuur."],
+                correct: "normal",
+                title: "De Social Engineering Check",
+                feedback: "Elena handelde perfect. Social engineering via USB-sticks of 'hulpvragen' is een veelgebruikte aanvalsmethode.",
+                bestPractice: "Plug nooit externe apparatuur in op verzoek van onbekenden. Vraag altijd om officiële legitimatie."
+            },
+            {
+                id: "case7",
+                name: "Bram L.",
+                role: "Account Manager",
+                context: "Is vaak onderweg naar klanten.",
+                logs: ["[14:00] Bram werkt op een onbeveiligd publiek WiFi-netwerk in de trein.", "Collega ziet dat Bram gevoelige contracten leest zonder privacy-filter op zijn scherm.", "Bram deelt zijn wachtwoord met een collega om 'even te helpen'."],
+                correct: "sloppy",
+                title: "De Publieke Werker",
+                feedback: "Bram brengt bedrijfsdata in gevaar door onveilige verbindingen en gebrek aan visuele privacy.",
+                bestPractice: "Gebruik altijd de bedrijfs-VPN op publieke WiFi en gebruik een privacy-screen op je laptop."
+            },
+            {
+                id: "case8",
+                name: "Sandra D.",
+                role: "Financieel Directeur",
+                context: "Heeft tekenbevoegdheid voor grote bedragen.",
+                logs: ["Sandra ontvangt een 'spoed' mail van de CEO om direct €50.000 over te maken naar een nieuwe leverancier.", "Sandra belt de CEO op zijn mobiel om de opdracht te verifiëren.", "CEO weet van niets."],
+                correct: "normal",
+                title: "CEO Fraude Preventie",
+                feedback: "Sandra heeft een poging tot Business Email Compromise (BEC) voorkomen door een alternatief communicatiekanaal te gebruiken.",
+                bestPractice: "Verifieer ongebruikelijke financiële verzoeken altijd via een ander kanaal (telefoon, fysiek) dan de ontvangen e-mail."
+            },
+            {
+                id: "case9",
+                name: "Kevin J.",
+                role: "Logistiek Medewerker",
+                context: "Heeft toegang tot het magazijn.",
+                logs: ["Kevin wordt gefilmd terwijl hij een vreemde in de beveiligde zone laat 'meelopen' (tailgating).", "Kevin zegt: 'Ik dacht dat hij hier hoorde'.", "Kast met reserve-laptops blijkt later opengebroken."],
+                correct: "sloppy",
+                title: "De Gastvrije Tailgater",
+                feedback: "Beleefdheid mag nooit boven beveiliging gaan. Tailgating is een van de makkelijkste manieren om fysiek binnen te dringen.",
+                bestPractice: "Laat nooit iemand achter je aan door een beveiligde deur lopen. Iedereen moet individueel badgen."
+            },
+            {
+                id: "case10",
+                name: "Anoniem",
+                role: "Onbekend",
+                context: "Gevonden op het parkeerterrein.",
+                logs: ["Er liggen drie USB-sticks met de tekst 'Salarissen 2024' op de parkeerplaats.", "Een medewerker raapt ze op en levert ze in bij de IT-afdeling zonder ze in te pluggen.", "IT vindt malware op de sticks."],
+                correct: "normal",
+                title: "De USB Trap",
+                feedback: "Dit is een bewuste aanval van buitenaf (Baiting). De medewerker handelde correct door ze niet te testen.",
+                bestPractice: "Vind je hardware? Plug het NOOIT in. Lever het direct in bij IT. Nieuwsgierigheid is de grootste vijand van security."
+            }
+        ];
+
+        function shuffleAndPick() {
+            const shuffled = [...questionPool].sort(() => 0.5 - Math.random());
+            activeQuestions = shuffled.slice(0, 7);
+        }
+
+        function startGame() {
+            const nameInput = document.getElementById('username').value;
+            if(!nameInput) return alert("Voer eerst je naam in, Agent.");
+            
+            currentUser = nameInput;
+            shuffleAndPick();
+            document.getElementById('display-name').innerText = currentUser;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-ui').classList.remove('hidden');
+            renderCase();
+        }
+
+        function renderCase() {
+            const c = activeQuestions[currentCaseIndex];
+            const container = document.getElementById('case-container');
+            document.getElementById('case-counter').innerText = currentCaseIndex + 1;
+
+            container.innerHTML = `
+                <div class="cyber-card p-8 rounded-lg animate__animated animate__fadeInRight">
+                    <div class="flex flex-col md:flex-row gap-6 mb-8">
+                        <div class="w-24 h-24 bg-blue-900/30 flex items-center justify-center border border-blue-500 rounded text-4xl">👤</div>
+                        <div>
+                            <h2 class="text-2xl font-tech text-white">${c.name}</h2>
+                            <p class="text-blue-400 text-sm uppercase mb-2">${c.role}</p>
+                            <p class="text-gray-400 text-sm italic border-l-2 border-blue-500 pl-4">${c.context}</p>
+                        </div>
+                    </div>
+
+                    <div class="log-box p-4 rounded font-mono mb-8">
+                        <div class="text-[10px] text-gray-500 mb-2 uppercase tracking-tighter">// EVIDENCE_COLLECTED:</div>
+                        ${c.logs.map(log => `
+                            <div class="py-1 border-b border-white/5 ${log.includes('WARNING') || log.includes('Gezien') || log.includes('Login op systeem') ? 'red-flag-alert' : 'text-gray-300'}">
+                                <span class="text-blue-500 mr-2">></span> ${log}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="submitVote('normal')" class="btn-cyber !text-green-400 !border-green-400 hover:!bg-green-400">NORMAAL</button>
+                        <button onclick="submitVote('sloppy')" class="btn-cyber !text-yellow-400 !border-yellow-400 hover:!bg-yellow-400">SLORDIG</button>
+                        <button onclick="submitVote('danger')" class="btn-cyber !text-red-400 !border-red-400 hover:!bg-red-400">VERDACHT</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitVote(choice) {
+            const c = activeQuestions[currentCaseIndex];
+            const isCorrect = c.correct === choice;
+            
+            userChoices.push({
+                caseTitle: c.title,
+                choice: choice,
+                correct: c.correct,
+                isCorrect: isCorrect
+            });
+
+            const modal = document.getElementById('modal');
+            document.getElementById('modal-title').innerText = c.title;
+            document.getElementById('modal-feedback').innerText = c.feedback;
+            document.getElementById('modal-best-practice').innerText = c.bestPractice;
+            
+            const indicator = document.getElementById('modal-indicator');
+            if(isCorrect) {
+                indicator.innerText = "✓ CORRECTE ANALYSE";
+                indicator.className = "text-xs font-tech mb-2 text-green-400";
+            } else {
+                indicator.innerText = "✗ INCORRECTE ANALYSE";
+                indicator.className = "text-xs font-tech mb-2 text-red-400";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function nextCase() {
+            document.getElementById('modal').classList.add('hidden');
+            if(currentCaseIndex < activeQuestions.length - 1) {
+                currentCaseIndex++;
+                renderCase();
+            } else {
+                showFinalAnalysis();
+            }
+        }
+
+        function showFinalAnalysis() {
+            document.getElementById('game-ui').classList.add('hidden');
+            document.getElementById('analysis-screen').classList.remove('hidden');
+            
+            document.getElementById('final-name').innerText = currentUser;
+            
+            const correctCount = userChoices.filter(u => u.isCorrect).length;
+            const scorePercentage = Math.round((correctCount / activeQuestions.length) * 100);
+            document.getElementById('final-score').innerText = scorePercentage + "%";
+
+            const resultsContainer = document.getElementById('analysis-results');
+            resultsContainer.innerHTML = userChoices.map((u, index) => `
+                <div class="result-item">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-tech text-white text-sm">${u.caseTitle}</h4>
+                        <span class="${u.isCorrect ? 'text-green-400' : 'text-red-400'} text-[10px] font-bold uppercase">
+                            ${u.isCorrect ? 'Correct' : 'Foutief'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            let conclusion = "";
+            if(scorePercentage === 100) {
+                conclusion = "Elite Agent status bereikt. Je herkent de meest subtiele gevaren binnen de organisatie.";
+            } else if (scorePercentage >= 70) {
+                conclusion = "Sterke analyse. Je bent zeer alert op insider threats, maar blijf focussen op de details.";
+            } else {
+                conclusion = "Training aanbevolen. Insider threats zijn lastig te herkennen omdat ze vaak van 'vertrouwde' collega's komen.";
+            }
+            document.getElementById('final-conclusion').innerText = conclusion;
+        }
+    </script>
+</body>
+</html>
