@@ -1,58 +1,82 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phishing Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="top-bar">
-    <button onclick="goHome()" class="btn-home">← Home</button>
-    <div class="top-bar-content">
-        <span id="welcome"></span>
-        <span id="score-display">Score: 0 / 0</span>
-    </div>
-</div>
-
-<div class="quiz-container">
-
-    <div class="progress-bar">
-        <div id="progress-fill" class="progress-fill"></div>
-    </div>
-
-    <div class="email-card">
-        <div class="email-header">
-            <div class="email-field">
-                <p class="label">From:</p>
-                <p class="value" id="from"></p>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="top-bar-left">
+                <div class="logo-container horizontal">
+                    <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100" height="100" rx="20" fill="url(#paint_grad2)" fill-opacity="0.15" />
+                        <path d="M30 30L70 70M70 30L30 70" stroke="url(#paint_grad2)" stroke-width="12"
+                            stroke-linecap="round" />
+                        <defs>
+                            <linearGradient id="paint_grad2" x1="0" y1="0" x2="100" y2="100"
+                                gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#38bdf8" />
+                                <stop offset="1" stop-color="#818cf8" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="logo-text">Con<span>X</span>ion</div>
+                </div>
+                <button onclick="goHome()" class="btn-home">← Home</button>
             </div>
-            <div class="email-field">
-                <p class="label">Subject:</p>
-                <p class="value" id="subject"></p>
+            <div>
+                <span id="welcome" style="margin-right: 15px; color: var(--text-secondary);"></span>
+                <span id="score-display">Score: 0 / 0</span>
             </div>
         </div>
-        <div class="email-body" id="body"></div>
     </div>
 
-    <div class="question-text">Is this email real or phishing?</div>
+    <div class="quiz-container">
 
-    <div class="buttons">
-        <button onclick="answer('real')" class="btn btn-real">✓ Real Email</button>
-        <button onclick="answer('phishing')" class="btn btn-phishing">⚠ Phishing</button>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+
+        <div class="email-card glass-panel">
+            <div class="email-header">
+                <div class="email-field">
+                    <p class="label">From:</p>
+                    <p class="value" id="from"></p>
+                </div>
+                <div class="email-field">
+                    <p class="label">Subject:</p>
+                    <p class="value" id="subject"></p>
+                </div>
+            </div>
+            <div class="email-body" id="body"></div>
+        </div>
+
+        <div class="question-text">Is this email real or phishing?</div>
+
+        <div class="buttons">
+            <button onclick="answer('real')" class="btn btn-real">✓ Real Email</button>
+            <button onclick="answer('phishing')" class="btn btn-phishing">⚠ Phishing</button>
+        </div>
+
+        <p id="feedback" class="feedback"></p>
+        <button id="next-btn" onclick="nextQuestion()" class="btn btn-primary" style="display:none;">Next
+            Question</button>
+
+        <div id="final-score-container" class="glass-panel" style="display:none;">
+            <h2 id="final-score"></h2>
+            <p class="final-message">Thank you for playing the ConXion Phishing Awareness Game.</p>
+            <button id="restart-btn" onclick="restartGame()" class="btn btn-primary">Play Again</button>
+        </div>
+
     </div>
 
-    <p id="feedback" class="feedback"></p>
-    <button id="next-btn" onclick="nextQuestion()" class="btn btn-primary" style="display:none;">Next Question</button>
-
-    <div id="final-score-container" style="display:none;">
-        <h2 id="final-score"></h2>
-        <button id="restart-btn" onclick="restartGame()" class="btn btn-primary">Play Again</button>
-    </div>
-
-</div>
-
-<script src="quizScript.js"></script>
+    <script src="quizScript.js"></script>
 </body>
+
 </html>
