@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitle">Phishing Awareness Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="centered">
+
+    <div class="card glass-panel">
+        <div class="logo-container">
+            <svg width="56" height="56" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="24" fill="url(#paint_grad)" fill-opacity="0.15" />
+                <path d="M30 30L70 70M70 30L30 70" stroke="url(#paint_grad)" stroke-width="12" stroke-linecap="round" />
+                <defs>
+                    <linearGradient id="paint_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#38bdf8" />
+                        <stop offset="1" stop-color="#818cf8" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="logo-text">Con<span>X</span>ion</div>
+        </div>
+
+        <div style="position:absolute;top:18px;right:18px;">
+            <div class="lang-switch active-en" id="lang-switch-index">
+                <div class="lang-thumb"></div>
+                <span class="lang-opt" data-val="en">EN</span>
+                <span class="lang-opt" data-val="nl">NL</span>
+            </div>
+        </div>
+
+        <h1 data-i18n="heading">Phishing Awareness</h1>
+        <p class="subtitle" data-i18n="subtitle">Test your email security skills</p>
+        <input type="text" id="username" data-i18n-placeholder="namePlaceholder" placeholder="Enter your name"
+            class="input-field">
+        <button onclick="startGame()" class="btn btn-primary" data-i18n="startBtn">Start Game</button>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="namePageScript.js"></script>
+
+</body>
+
+</html>
