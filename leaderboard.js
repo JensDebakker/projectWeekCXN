@@ -7,6 +7,7 @@
 const LeaderboardManager = {
     db: null,
     isFirebase: false,
+    currentFilter: 'All',
 
     init: async function() {
         if (window.firebase && window.firebaseConfig && window.firebaseConfig.apiKey !== "YOUR_API_KEY") {
@@ -21,13 +22,27 @@ const LeaderboardManager = {
                 console.error("Firebase init failed, using local storage:", e);
             }
         }
+        
+        this.setupFilters();
         this.render();
+    },
+
+    setupFilters: function() {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.currentFilter = btn.getAttribute('data-filter');
+                this.render();
+            });
+        });
     },
 
     // 1. Get scores
     getScores: function(callback) {
         if (this.isFirebase) {
-            this.db.ref('scores').orderByChild('score').limitToLast(50).on('value', (snapshot) => {
+            this.db.ref('scores').orderByChild('score').limitToLast(100).on('value', (snapshot) => {
                 const data = snapshot.val();
                 let scores = [];
                 if (data) {
@@ -57,7 +72,7 @@ const LeaderboardManager = {
             let scores = JSON.parse(localStorage.getItem('cxn_leaderboard') || '[]');
             scores.push(newEntry);
             scores.sort((a, b) => b.score - a.score);
-            localStorage.setItem('cxn_leaderboard', JSON.stringify(scores.slice(0, 50)));
+            localStorage.setItem('cxn_leaderboard', JSON.stringify(scores.slice(0, 100)));
         }
     },
 
@@ -70,10 +85,18 @@ const LeaderboardManager = {
         const totalParticipantsEl = document.getElementById('total-participants');
         const topScoreEl = document.getElementById('top-score');
 
-        this.getScores((scores) => {
+        this.getScores((allScores) => {
+            // Filter scores if necessary
+            let scores = allScores;
+            if (this.currentFilter !== 'All') {
+                scores = allScores.filter(s => s.module === this.currentFilter);
+            }
+
             if (scores.length === 0) {
                 tbody.innerHTML = '';
                 noDataMsg.style.display = 'block';
+                totalParticipantsEl.textContent = '0';
+                topScoreEl.textContent = '0';
                 return;
             }
 

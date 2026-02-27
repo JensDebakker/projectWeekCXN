@@ -194,6 +194,41 @@
                 font-size: 1.8rem;
             }
         }
+
+        /* Filter Tabs */
+        .filter-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 50px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--vives-blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 64, 133, 0.2);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--vives-blue);
+        }
     </style>
 </head>
 
@@ -216,6 +251,15 @@
                     <div class="label">Top Score</div>
                     <div id="top-score" class="value">0</div>
                 </div>
+            </div>
+
+            <div class="filter-nav">
+                <button class="filter-btn active" data-filter="All">Alle Games</button>
+                <button class="filter-btn" data-filter="Phishing">Phishing</button>
+                <button class="filter-btn" data-filter="AI Detector">AI Detector</button>
+                <button class="filter-btn" data-filter="Passwords">Passwords</button>
+                <button class="filter-btn" data-filter="OSINT">OSINT</button>
+                <button class="filter-btn" data-filter="Social Engineering">Social Eng.</button>
             </div>
 
             <div class="table-wrapper">
