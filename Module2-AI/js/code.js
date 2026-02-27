@@ -13,38 +13,34 @@ const submitLeft = () =>{
     let answerStatus = document.getElementById("answerStatus")
     switch(gameData.currentVid){
         case 1:
-            answerStatus.textContent = "Correct"
-            gameData.score+=1;
+            answerStatus.textContent = "Wrong, a woman on the left had a distorted face and had strange fingers in the other image";
             changeVideo();
             break;
         case 2:
-            answerStatus.textContent = "Correct"
-            gameData.score+=1;
+            answerStatus.textContent = "Wrong, the buildings in the back on the left had very strange lines and the people had strange faces in the other image";
             changeVideo();
             break;
         case 3:
-            answerStatus.textContent = "Correct"
+            answerStatus.textContent = "Correct, there were multiple issues with their fingers";
             gameData.score+=1;
             changeVideo();
             break;
         case 4:
-            answerStatus.textContent = "Correct"
+            answerStatus.textContent = "Correct, the buildings on the left had strange lines";
             gameData.score+=1;
             changeVideo();
             break;
         case 5:
-            answerStatus.textContent = "Correct"
-            gameData.score+=1;
+            answerStatus.textContent = "Wrong, The fingers of the man in the middle made no sense in the other image";
             changeVideo();
             break;
         case 6:
-            answerStatus.textContent = "Correct"
+            answerStatus.textContent = "Correct, the sketches and buildings had strange lines";
             gameData.score+=1;
             changeVideo();
             break;
         case 7:
-            answerStatus.textContent = "Correct"
-            gameData.score+=1;
+            answerStatus.textContent = "Wrong, their fingers were strange in the other image";
             endGame();
             break;
     }
@@ -54,31 +50,35 @@ const submitRight = () =>{
     let answerStatus = document.getElementById("answerStatus")
     switch(gameData.currentVid){
         case 1:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Correct, a woman on the left had distorted face and had strange fingers";
+            gameData.score+=1;
             changeVideo();
             break;
         case 2:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Correct, the buildings in the back on the left had very strange lines and the people had strange faces";
+            gameData.score+=1;
             changeVideo();
             break;
         case 3:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Wrong, there were multiple issues with their fingers in the other image";
             changeVideo();
             break;
         case 4:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Wrong, the buildings on the left had strange lines in the other image"
             changeVideo();
             break;
         case 5:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Correct, The fingers of the man in the middle made no sense";
+            gameData.score+=1;
             changeVideo();
             break;
         case 6:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Wrong, the sketches and buildings had strange lines in the other image";
             changeVideo();
             break;
         case 7:
-            answerStatus.textContent = "Wrong"
+            answerStatus.textContent = "Correct, their fingers were strange";
+            gameData.score+=1;
             endGame();
             break;
     }
