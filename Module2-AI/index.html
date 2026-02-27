@@ -9,7 +9,7 @@
 </head>
 
 <body>
-     <h1>Real Or AI?</h1>
+    <h1>Real Or AI?</h1>
     <div class="container">
         <div class="box">
             <img src="img/MeetingReal1.avif" alt="meeting in a white room" height="340" width="640" id="img1Left">
@@ -29,13 +29,17 @@
             <img src="img/MeetingFake6.avif" alt="Fake" height="340" width="640" id="img5Right" class="hidden">
             <img src="img/MeetingReal6.avif" alt="Real" height="340" width="640" id="img6Right" class="hidden">
             <img src="img/MeetingFake7.jpeg" alt="Fake" height="340" width="640" id="img7Right" class="hidden">
-            <button id="imgRightSubmit"  class="btn btn-danger">AI</button>
+            <button id="imgRightSubmit" class="btn btn-danger">AI</button>
         </div>
     </div>
     <p id="answerStatus"></p>
     <h2 class="hidden" id="result"></h2>
 
     <script src="../nav.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../leaderboard.js"></script>
     <script src="js/code.js"></script>
 </body>
 

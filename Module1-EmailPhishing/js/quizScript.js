@@ -441,6 +441,12 @@ function endGame() {
     feedbackEl.style.display   = "none";
     removeExtras();
 
+    // Save score to leaderboard
+    const playerName = localStorage.getItem("playerName") || "Anonymous";
+    if (window.LeaderboardManager) {
+        window.LeaderboardManager.saveScore(playerName, score, "Phishing");
+    }
+
     const percentage = Math.round((score / MAX_SCORE) * 100);
 
     let message;

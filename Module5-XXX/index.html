@@ -409,9 +409,15 @@
 
             document.getElementById('final-name').innerText = currentUser;
 
-            const correctCount = userChoices.filter(u => u.isCorrect).length;
             const scorePercentage = Math.round((correctCount / activeQuestions.length) * 100);
             document.getElementById('final-score').innerText = scorePercentage + "%";
+
+            // Save to leaderboard
+            const playerName = localStorage.getItem("playerName") || currentUser || "Guest (Module 5)";
+            if (window.LeaderboardManager) {
+                window.LeaderboardManager.saveScore(playerName, scorePercentage, "Red Flags");
+            }
+
 
             const resultsContainer = document.getElementById('analysis-results');
             resultsContainer.innerHTML = userChoices.map((u, index) => `
@@ -436,6 +442,11 @@
             document.getElementById('final-conclusion').innerText = conclusion;
         }
     </script>
+    <script src="../nav.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../leaderboard.js"></script>
 </body>
 
 </html>

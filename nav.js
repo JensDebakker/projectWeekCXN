@@ -16,6 +16,7 @@
         { id: 3, label: "Passwords",       path: "Module3-Password/index.html" },
         { id: 4, label: "Social Eng.",     path: "Module4-XXX/index.html" },
         { id: 5, label: "Safe Browsing",   path: "Module5-XXX/index.html" },
+        { id: 6, label: "Leaderboard",     path: "leaderboard.html" },
     ];
 
     // ── Detect current module number from the URL ──────────────────────────

@@ -108,6 +108,12 @@ const endGame = () =>{
     let resTxt = document.getElementById("result");
     resTxt.classList.toggle("hidden");
     resTxt.textContent = "Your score is: " + gameData.score
+
+    // Save score to leaderboard
+    const playerName = localStorage.getItem("playerName") || "Guest (AI Module)";
+    if (window.LeaderboardManager) {
+        window.LeaderboardManager.saveScore(playerName, gameData.score, "AI Detector");
+    }
 }
 
 window.addEventListener("load", setup);

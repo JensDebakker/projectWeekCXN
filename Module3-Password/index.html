@@ -312,6 +312,12 @@
             }
 
             document.getElementById('end-stats').innerText = `FINALE SCORE: ${score} // OVERGEBLEVEN LEVENS: ${health}`;
+
+            // Save to leaderboard
+            const playerName = localStorage.getItem("playerName") || "Guest (Password Module)";
+            if (window.LeaderboardManager) {
+                window.LeaderboardManager.saveScore(playerName, score, "Passwords");
+            }
         }
 
         // Simuleer wat hacker activiteit op de achtergrond
@@ -326,6 +332,10 @@
 
     </script>
     <script src="../nav.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../leaderboard.js"></script>
 </body>
 
 </html>
