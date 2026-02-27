@@ -21,7 +21,7 @@ const submitLeft = () =>{
             changeVideo();
             break;
         case 3:
-            answerStatus.textContent = "Correct, there were multiple issues with their fingers";
+            answerStatus.textContent = "Correct, there were multiple issues with their fingers ";
             gameData.score+=1;
             changeVideo();
             break;
