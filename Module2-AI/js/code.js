@@ -4,8 +4,8 @@ let gameData={
 }
 
 const setup = () =>{
-    document.getElementById("vidLeftSubmit").addEventListener("click", submitLeft);
-    document.getElementById("vidRightSubmit").addEventListener("click", submitRight);
+    document.getElementById("imgLeftSubmit").addEventListener("click", submitLeft);
+    document.getElementById("imgRightSubmit").addEventListener("click", submitRight);
     
 }
 
@@ -85,13 +85,13 @@ const submitRight = () =>{
 }
 
 const changeVideo = () =>{
-    //gets the currently visible video element id
-    let oldVidLeft = "vid" + gameData.currentVid.toString() + "Left";
-    let oldVidRight = "vid" + gameData.currentVid.toString() + "Right";
+    //gets the currently visible image element id
+    let oldVidLeft = "img" + gameData.currentVid.toString() + "Left";
+    let oldVidRight = "img" + gameData.currentVid.toString() + "Right";
     gameData.currentVid+=1; //Increments the currentVid number
     //Gets the next video element to show
-    let videoLeft = "vid" + gameData.currentVid.toString() + "Left";
-    let videoRight = "vid" + gameData.currentVid.toString() + "Right";
+    let videoLeft = "img" + gameData.currentVid.toString() + "Left";
+    let videoRight = "img" + gameData.currentVid.toString() + "Right";
 
     //Change visibility state
     document.getElementById(oldVidLeft).classList.toggle("hidden")
@@ -101,11 +101,10 @@ const changeVideo = () =>{
 }
 
 const endGame = () =>{
-    document.getElementById("vid7Left").classList.toggle("hidden");
-    document.getElementById("vid7Right").classList.toggle("hidden");
-    document.getElementById("vidLeftSubmit").classList.toggle("hidden");
-    document.getElementById("vidRightSubmit").classList.toggle("hidden");
-    document.getElementById("answerStatus").classList.toggle("hidden");
+    document.getElementById("img7Left").classList.toggle("hidden");
+    document.getElementById("img7Right").classList.toggle("hidden");
+    document.getElementById("imgLeftSubmit").classList.toggle("hidden");
+    document.getElementById("imgRightSubmit").classList.toggle("hidden");
     let resTxt = document.getElementById("result");
     resTxt.classList.toggle("hidden");
     resTxt.textContent = "Your score is: " + gameData.score
