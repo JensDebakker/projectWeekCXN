@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conxion - Find The Red Flag</title>
+    <title>ConXion - Find The Red Flag</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
@@ -25,7 +26,10 @@
             margin: 0;
         }
 
-        h1, h2, h3, .font-tech {
+        h1,
+        h2,
+        h3,
+        .font-tech {
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -41,8 +45,11 @@
 
         .grid-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
                 linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -67,8 +74,8 @@
         }
 
         .log-box {
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.8rem;
         }
 
@@ -78,16 +85,23 @@
             animation: blink 1s infinite;
         }
 
-        @keyframes blink { 50% { opacity: 0.3; } }
+        @keyframes blink {
+            50% {
+                opacity: 0.3;
+            }
+        }
 
-        .hidden { display: none !important; }
-        
+        .hidden {
+            display: none !important;
+        }
+
         .result-item {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 15px 0;
         }
     </style>
 </head>
+
 <body>
     <div class="grid-bg"></div>
 
@@ -96,26 +110,31 @@
         <div class="max-w-md w-full cyber-card p-8 rounded-lg text-center border-2 border-blue-500">
             <div class="text-blue-500 mb-4 font-tech tracking-widest">CONXION SECURITY LABS</div>
             <h1 class="text-3xl text-white mb-6">FIND THE <span class="text-cyan-400">RED FLAG</span></h1>
-            <p class="text-gray-400 text-sm mb-8">Analyseer 7 willekeurige scenario's. Identificeer interne dreigingen en leer best-practices.</p>
-            
+            <p class="text-gray-400 text-sm mb-8">Analyseer 7 willekeurige scenario's. Identificeer interne dreigingen
+                en leer best-practices.</p>
+
             <div class="mb-6 text-left">
                 <label class="block text-xs text-blue-400 mb-2 uppercase tracking-tighter">Naam Medewerker:</label>
-                <input type="text" id="username" placeholder="Typ je naam..." class="w-full bg-black/50 border border-blue-500/50 p-3 text-white focus:border-cyan-400 outline-none transition-all">
+                <input type="text" id="username" placeholder="Typ je naam..."
+                    class="w-full bg-black/50 border border-blue-500/50 p-3 text-white focus:border-cyan-400 outline-none transition-all">
             </div>
-            
+
             <button onclick="startGame()" class="btn-cyber w-full">START MISSIE</button>
         </div>
     </div>
 
     <!-- Main Game UI -->
     <div id="game-ui" class="hidden p-4 md:p-8 animate__animated animate__fadeIn">
-        <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-blue-900 pb-6">
+        <header
+            class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-blue-900 pb-6">
             <div>
                 <div class="text-blue-400 text-sm mb-2 font-tech">CONXION // INSIDER THREAT MONITOR</div>
-                <h1 class="text-4xl font-bold text-white">AGENT: <span id="display-name" class="text-cyan-400 text-2xl uppercase"></span></h1>
+                <h1 class="text-4xl font-bold text-white">AGENT: <span id="display-name"
+                        class="text-cyan-400 text-2xl uppercase"></span></h1>
             </div>
             <div class="text-right">
-                <div class="text-[10px] text-blue-500 tracking-widest">SYSTEM STATUS: <span class="text-green-500">ACTIVE</span></div>
+                <div class="text-[10px] text-blue-500 tracking-widest">SYSTEM STATUS: <span
+                        class="text-green-500">ACTIVE</span></div>
                 <div class="flex gap-4 mt-2">
                     <div class="bg-blue-900/20 p-2 border border-blue-500/30 rounded min-w-[100px]">
                         <div class="text-[9px] text-blue-400 uppercase">Voortgang</div>
@@ -132,11 +151,12 @@
 
     <!-- Feedback Modal -->
     <div id="modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="cyber-card w-full max-w-2xl p-8 rounded-xl animate__animated animate__zoomIn border-t-4 border-blue-500">
+        <div
+            class="cyber-card w-full max-w-2xl p-8 rounded-xl animate__animated animate__zoomIn border-t-4 border-blue-500">
             <div id="modal-indicator" class="text-xs font-tech mb-2">ANALYSE RESULTAAT</div>
             <h2 id="modal-title" class="text-2xl font-tech mb-4 text-white"></h2>
             <div id="modal-feedback" class="text-gray-300 mb-6 leading-relaxed"></div>
-            
+
             <div class="bg-slate-800/50 p-4 border border-slate-700 rounded mb-6">
                 <div class="text-xs text-blue-400 mb-1 uppercase">Best Practice:</div>
                 <div id="modal-best-practice" class="text-sm italic text-white"></div>
@@ -166,7 +186,7 @@
                 </div>
 
                 <div class="bg-blue-900/20 p-6 border-l-4 border-blue-500 mb-8">
-                    <h3 class="font-tech text-white mb-2">Conclusie Conxion</h3>
+                    <h3 class="font-tech text-white mb-2">Conclusie ConXion</h3>
                     <p id="final-conclusion" class="text-sm text-gray-300"></p>
                 </div>
 
@@ -301,8 +321,8 @@
 
         function startGame() {
             const nameInput = document.getElementById('username').value;
-            if(!nameInput) return alert("Voer eerst je naam in, Agent.");
-            
+            if (!nameInput) return alert("Voer eerst je naam in, Agent.");
+
             currentUser = nameInput;
             shuffleAndPick();
             document.getElementById('display-name').innerText = currentUser;
@@ -348,7 +368,7 @@
         function submitVote(choice) {
             const c = activeQuestions[currentCaseIndex];
             const isCorrect = c.correct === choice;
-            
+
             userChoices.push({
                 caseTitle: c.title,
                 choice: choice,
@@ -360,9 +380,9 @@
             document.getElementById('modal-title').innerText = c.title;
             document.getElementById('modal-feedback').innerText = c.feedback;
             document.getElementById('modal-best-practice').innerText = c.bestPractice;
-            
+
             const indicator = document.getElementById('modal-indicator');
-            if(isCorrect) {
+            if (isCorrect) {
                 indicator.innerText = "✓ CORRECTE ANALYSE";
                 indicator.className = "text-xs font-tech mb-2 text-green-400";
             } else {
@@ -375,7 +395,7 @@
 
         function nextCase() {
             document.getElementById('modal').classList.add('hidden');
-            if(currentCaseIndex < activeQuestions.length - 1) {
+            if (currentCaseIndex < activeQuestions.length - 1) {
                 currentCaseIndex++;
                 renderCase();
             } else {
@@ -386,9 +406,9 @@
         function showFinalAnalysis() {
             document.getElementById('game-ui').classList.add('hidden');
             document.getElementById('analysis-screen').classList.remove('hidden');
-            
+
             document.getElementById('final-name').innerText = currentUser;
-            
+
             const correctCount = userChoices.filter(u => u.isCorrect).length;
             const scorePercentage = Math.round((correctCount / activeQuestions.length) * 100);
             document.getElementById('final-score').innerText = scorePercentage + "%";
@@ -406,7 +426,7 @@
             `).join('');
 
             let conclusion = "";
-            if(scorePercentage === 100) {
+            if (scorePercentage === 100) {
                 conclusion = "Elite Agent status bereikt. Je herkent de meest subtiele gevaren binnen de organisatie.";
             } else if (scorePercentage >= 70) {
                 conclusion = "Sterke analyse. Je bent zeer alert op insider threats, maar blijf focussen op de details.";
@@ -417,4 +437,5 @@
         }
     </script>
 </body>
+
 </html>

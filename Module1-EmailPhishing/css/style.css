@@ -62,10 +62,7 @@ body {
 }
 
 .logo-text span {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: inherit;
 }
 
 /* Name Page Styling */

@@ -45,13 +45,16 @@
     }).join("");
 
     const navHTML = `
+        <div class="cxn-prototype-banner">
+            PROTOTYPE — PROJECT WEEK — FOR EDUCATIONAL PURPOSES ONLY
+        </div>
         <nav class="cxn-nav" id="cxn-nav">
             <div class="cxn-nav-inner">
 
                 <!-- Logo / Home -->
                 <a href="${homeHref}" class="cxn-nav-logo" title="Back to main menu">
                     <img src="${rootPath}vives.png" alt="VIVES" style="height: 28px; width: auto;">
-                    <span class="cxn-nav-logo-text">Con<span>X</span>ion</span>
+                    <img src="${rootPath}conxion.png" alt="ConXion" style="height: 24px; width: auto; margin-left: 5px;">
                 </a>
 
                 <!-- Module links -->
@@ -71,12 +74,30 @@
     // ── Inject CSS ─────────────────────────────────────────────────────────
     const style = document.createElement("style");
     style.textContent = `
-        /* Push page content below the nav */
-        body { padding-top: 52px !important; }
+        /* Push page content below the nav + banner */
+        body { padding-top: 76px !important; }
+
+        .cxn-prototype-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            background: #1e293b;
+            color: #94a3b8;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
         .cxn-nav {
             position: fixed;
-            top: 0;
+            top: 24px;
             left: 0;
             right: 0;
             z-index: 9999;
@@ -115,10 +136,7 @@
         }
 
         .cxn-nav-logo-text span {
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: inherit;
         }
 
         .cxn-nav-links {
