@@ -14,8 +14,8 @@
         { id: 1, label: "Phishing",        path: "Module1-EmailPhishing/index.html" },
         { id: 2, label: "AI",              path: "Module2-AI/index.html" },
         { id: 3, label: "Passwords",       path: "Module3-Password/index.html" },
-        { id: 4, label: "Social Eng.",     path: "Module4-XXX/index.html" },
-        { id: 5, label: "Safe Browsing",   path: "Module5-XXX/index.html" },
+        { id: 4, label: "OSINT",           path: "Module4-XXX/index.html" },
+        { id: 5, label: "Social Engineering", path: "Module5-XXX/index.html" },
         { id: 6, label: "Leaderboard",     path: "leaderboard.html" },
     ];
 
