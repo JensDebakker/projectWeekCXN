@@ -442,7 +442,7 @@ function endGame() {
     removeExtras();
 
     // Save score to leaderboard
-    const playerName = localStorage.getItem("playerName") || "Anonymous";
+    const playerName = localStorage.getItem("playerName") || "Guest";
     if (window.LeaderboardManager) {
         window.LeaderboardManager.saveScore(playerName, score, "Phishing");
     }

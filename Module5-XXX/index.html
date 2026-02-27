@@ -409,11 +409,12 @@
 
             document.getElementById('final-name').innerText = currentUser;
 
+            const correctCount = userChoices.filter(u => u.isCorrect).length;
             const scorePercentage = Math.round((correctCount / activeQuestions.length) * 100);
             document.getElementById('final-score').innerText = scorePercentage + "%";
 
             // Save to leaderboard
-            const playerName = localStorage.getItem("playerName") || currentUser || "Guest (Module 5)";
+            const playerName = localStorage.getItem("playerName") || currentUser || "Guest";
             if (window.LeaderboardManager) {
                 window.LeaderboardManager.saveScore(playerName, scorePercentage, "Social Engineering");
             }

@@ -314,7 +314,7 @@
             document.getElementById('end-stats').innerText = `FINALE SCORE: ${score} // OVERGEBLEVEN LEVENS: ${health}`;
 
             // Save to leaderboard
-            const playerName = localStorage.getItem("playerName") || "Guest (Password Module)";
+            const playerName = localStorage.getItem("playerName") || "Guest";
             if (window.LeaderboardManager) {
                 window.LeaderboardManager.saveScore(playerName, score, "Passwords");
             }

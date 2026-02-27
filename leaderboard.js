@@ -7,7 +7,7 @@
 const LeaderboardManager = {
     db: null,
     isFirebase: false,
-    currentFilter: 'All',
+    currentFilter: 'Phishing',
 
     init: async function() {
         if (window.firebase && window.firebaseConfig && window.firebaseConfig.apiKey !== "YOUR_API_KEY") {

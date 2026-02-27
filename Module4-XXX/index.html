@@ -481,7 +481,7 @@
             else if (scorePercent > 50) rating = "Gevaarlijke Amateur";
 
             // Save to leaderboard
-            const playerName = localStorage.getItem("playerName") || "Guest (OSINT Module)";
+            const playerName = localStorage.getItem("playerName") || "Guest";
             if (window.LeaderboardManager) {
                 window.LeaderboardManager.saveScore(playerName, foundInfo.length, "OSINT");
             }
