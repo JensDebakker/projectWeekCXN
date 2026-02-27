@@ -45,7 +45,7 @@
     }).join("");
 
     const navHTML = `
-        <div class="cxn-prototype-banner">
+        <div class="cxn-prototype-banner" id="cxn-banner">
             PROTOTYPE — PROJECT WEEK — FOR EDUCATIONAL PURPOSES ONLY
         </div>
         <nav class="cxn-nav" id="cxn-nav">
@@ -62,10 +62,10 @@
                     ${moduleLinks}
                 </div>
 
-                <!-- Home button on the right -->
-                <a href="${homeHref}" class="cxn-nav-home">
-                    ⌂ Menu
-                </a>
+                <!-- Dismiss button on the right -->
+                <button class="cxn-nav-home" id="cxn-dismiss-banner" style="cursor: pointer; background: transparent;" title="Hide header">
+                    ✕ Sluiten
+                </button>
 
             </div>
         </nav>
@@ -213,5 +213,17 @@
 
     // ── Inject the nav as the very first child of <body> ───────────────────
     document.body.insertAdjacentHTML("afterbegin", navHTML);
+
+    // ── Handle Dismiss ─────────────────────────────────────────────────────
+    const dismissBtn = document.getElementById("cxn-dismiss-banner");
+    if (dismissBtn) {
+        dismissBtn.addEventListener("click", function () {
+            const banner = document.getElementById("cxn-banner");
+            const nav = document.getElementById("cxn-nav");
+            if (banner) banner.style.display = "none";
+            if (nav) nav.style.display = "none";
+            document.body.style.paddingTop = "0";
+        });
+    }
 
 })();
